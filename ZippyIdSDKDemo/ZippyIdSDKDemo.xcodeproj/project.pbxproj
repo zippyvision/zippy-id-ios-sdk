@@ -13,6 +13,7 @@
 		FD41405C21DC7312008543DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD41405B21DC7312008543DB /* Assets.xcassets */; };
 		FD41405F21DC7312008543DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD41405D21DC7312008543DB /* LaunchScreen.storyboard */; };
 		FD41407921DC7482008543DB /* ZippyIdSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD41407821DC7482008543DB /* ZippyIdSDK.framework */; };
+		FD81311921E74A0600A30324 /* ZippyIdSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD41407821DC7482008543DB /* ZippyIdSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,6 +23,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FD81311921E74A0600A30324 /* ZippyIdSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
