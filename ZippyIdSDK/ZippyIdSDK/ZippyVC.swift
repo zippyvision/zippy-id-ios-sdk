@@ -8,18 +8,32 @@
 
 import Foundation
 
-public protocol ZippyViewControllerDelegate {
-    func setAvailableCountries(from available: [ZippyCountry]) -> [ZippyCountry]
-    func setAvaiableDocumentsForCountry(for country: ZippyCountry, from available: [ZippyDocument]) -> [ZippyDocument]
-    func onCompleted(result: ZippyResult)
+public protocol ZippyVCDelegate {
+    func getSessionConfiguration() -> ZippySessionConfig
+    func onCompletedSuccessfully(result: ZippyResult)
+    func onCompletedWithError(error: ZippyError)
 }
 
 public class ZippyVC: UIViewController {
+    public var delegate: ZippyVCDelegate!
+    var wizardVC: WizardVC!
+    let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
         if !ZippyIdSDK.isInitialized {
             fatalError("Must call `ZippyIdSDK.initialize(key, secret)` before initalizing ZippyVC")
+        }
+        
+        if delegate == nil {
+            fatalError("Must pass a delegate to the ZippyVC")
+        }
+        
+        DispatchQueue.main.async {
+            self.wizardVC = (UIStoryboard(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC)
+            self.wizardVC.delegate = self.delegate
+            self.present(self.wizardVC, animated: false, completion: nil)
         }
     }
 }

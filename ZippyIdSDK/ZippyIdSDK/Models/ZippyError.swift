@@ -8,6 +8,16 @@
 
 import Foundation
 
-public class ZippyError: Error {
+public enum ZippyError: Error {
+    case processingTimedOut
+    case processingFailed
     
+    
+    case cameraCaptureSessionAlreadyRunning
+    case cameraCaptureSessionIsMissing
+    case cameraInputsAreInvalid
+    case cameraInvalidOperation
+    case cameraNoCamerasAvailable
+    case cameraWrappedError(Error)
+    case cameraUnknown
 }

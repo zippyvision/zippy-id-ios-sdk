@@ -11,12 +11,18 @@
 		FD41403D21DC72F3008543DB /* ZippyIdSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41403C21DC72F3008543DB /* ZippyIdSDKTests.swift */; };
 		FD41403F21DC72F3008543DB /* ZippyIdSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = FD41403121DC72F3008543DB /* ZippyIdSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FD41406D21DC73BA008543DB /* ZippyIdSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41406C21DC73BA008543DB /* ZippyIdSDK.swift */; };
-		FD41407021DC7402008543DB /* ZippyCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41406F21DC7402008543DB /* ZippyCountry.swift */; };
-		FD41407221DC740C008543DB /* ZippyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41407121DC740C008543DB /* ZippyDocument.swift */; };
 		FD41407421DC7415008543DB /* ZippyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41407321DC7415008543DB /* ZippyResult.swift */; };
 		FD41407621DC7427008543DB /* ZippyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41407521DC7427008543DB /* ZippyVC.swift */; };
 		FD41407E21DC7612008543DB /* ZippyVC.swift in Resources */ = {isa = PBXBuildFile; fileRef = FD41407521DC7427008543DB /* ZippyVC.swift */; };
 		FD41408021DC775F008543DB /* ZippyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41407F21DC775F008543DB /* ZippyError.swift */; };
+		FD598FB621E530F600DFE4FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD598FB521E530F600DFE4FE /* Main.storyboard */; };
+		FD598FB921E5E8A600DFE4FE /* WizardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD598FB821E5E8A600DFE4FE /* WizardVC.swift */; };
+		FD598FBB21E5E8E700DFE4FE /* TakePhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD598FBA21E5E8E700DFE4FE /* TakePhotoVC.swift */; };
+		FD81311721E7413E00A30324 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD81311621E7413E00A30324 /* CameraController.swift */; };
+		FD81311D21E7D11900A30324 /* ZippyCustomerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD81311C21E7D11900A30324 /* ZippyCustomerData.swift */; };
+		FD81311F21E7D1CD00A30324 /* ZippySessionConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD81311E21E7D1CD00A30324 /* ZippySessionConfig.swift */; };
+		FD81312A21E7DE5100A30324 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD81312921E7DE5100A30324 /* ApiClient.swift */; };
+		FD81312D21E7DF1200A30324 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD81312C21E7DF1200A30324 /* Promise.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,11 +43,17 @@
 		FD41403C21DC72F3008543DB /* ZippyIdSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyIdSDKTests.swift; sourceTree = "<group>"; };
 		FD41403E21DC72F3008543DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD41406C21DC73BA008543DB /* ZippyIdSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyIdSDK.swift; sourceTree = "<group>"; };
-		FD41406F21DC7402008543DB /* ZippyCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyCountry.swift; sourceTree = "<group>"; };
-		FD41407121DC740C008543DB /* ZippyDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyDocument.swift; sourceTree = "<group>"; };
 		FD41407321DC7415008543DB /* ZippyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyResult.swift; sourceTree = "<group>"; };
 		FD41407521DC7427008543DB /* ZippyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyVC.swift; sourceTree = "<group>"; };
 		FD41407F21DC775F008543DB /* ZippyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyError.swift; sourceTree = "<group>"; };
+		FD598FB521E530F600DFE4FE /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		FD598FB821E5E8A600DFE4FE /* WizardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardVC.swift; sourceTree = "<group>"; };
+		FD598FBA21E5E8E700DFE4FE /* TakePhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoVC.swift; sourceTree = "<group>"; };
+		FD81311621E7413E00A30324 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		FD81311C21E7D11900A30324 /* ZippyCustomerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyCustomerData.swift; sourceTree = "<group>"; };
+		FD81311E21E7D1CD00A30324 /* ZippySessionConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippySessionConfig.swift; sourceTree = "<group>"; };
+		FD81312921E7DE5100A30324 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		FD81312C21E7DF1200A30324 /* Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,11 +96,15 @@
 		FD41403021DC72F3008543DB /* ZippyIdSDK */ = {
 			isa = PBXGroup;
 			children = (
+				FD81312B21E7DF0500A30324 /* Utils */,
+				FD81312821E7DE4000A30324 /* Network */,
+				FD598FB721E5E89100DFE4FE /* UI */,
 				FD41406E21DC73F4008543DB /* Models */,
 				FD41403121DC72F3008543DB /* ZippyIdSDK.h */,
 				FD41406C21DC73BA008543DB /* ZippyIdSDK.swift */,
 				FD41407521DC7427008543DB /* ZippyVC.swift */,
 				FD41403221DC72F3008543DB /* Info.plist */,
+				FD81311621E7413E00A30324 /* CameraController.swift */,
 			);
 			path = ZippyIdSDK;
 			sourceTree = "<group>";
@@ -105,12 +121,38 @@
 		FD41406E21DC73F4008543DB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				FD41406F21DC7402008543DB /* ZippyCountry.swift */,
-				FD41407121DC740C008543DB /* ZippyDocument.swift */,
 				FD41407321DC7415008543DB /* ZippyResult.swift */,
 				FD41407F21DC775F008543DB /* ZippyError.swift */,
+				FD81311C21E7D11900A30324 /* ZippyCustomerData.swift */,
+				FD81311E21E7D1CD00A30324 /* ZippySessionConfig.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		FD598FB721E5E89100DFE4FE /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				FD598FB521E530F600DFE4FE /* Main.storyboard */,
+				FD598FB821E5E8A600DFE4FE /* WizardVC.swift */,
+				FD598FBA21E5E8E700DFE4FE /* TakePhotoVC.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		FD81312821E7DE4000A30324 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				FD81312921E7DE5100A30324 /* ApiClient.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		FD81312B21E7DF0500A30324 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				FD81312C21E7DF1200A30324 /* Promise.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD41407E21DC7612008543DB /* ZippyVC.swift in Resources */,
+				FD598FB621E530F600DFE4FE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,12 +266,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD81311721E7413E00A30324 /* CameraController.swift in Sources */,
 				FD41407621DC7427008543DB /* ZippyVC.swift in Sources */,
 				FD41406D21DC73BA008543DB /* ZippyIdSDK.swift in Sources */,
-				FD41407221DC740C008543DB /* ZippyDocument.swift in Sources */,
-				FD41407021DC7402008543DB /* ZippyCountry.swift in Sources */,
+				FD598FBB21E5E8E700DFE4FE /* TakePhotoVC.swift in Sources */,
 				FD41407421DC7415008543DB /* ZippyResult.swift in Sources */,
+				FD598FB921E5E8A600DFE4FE /* WizardVC.swift in Sources */,
+				FD81311D21E7D11900A30324 /* ZippyCustomerData.swift in Sources */,
 				FD41408021DC775F008543DB /* ZippyError.swift in Sources */,
+				FD81312D21E7DF1200A30324 /* Promise.swift in Sources */,
+				FD81311F21E7D1CD00A30324 /* ZippySessionConfig.swift in Sources */,
+				FD81312A21E7DE5100A30324 /* ApiClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
