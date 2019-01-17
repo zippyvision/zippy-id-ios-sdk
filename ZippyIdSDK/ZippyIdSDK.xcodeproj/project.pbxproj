@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E9F6342321EF3F8700F86856 /* ZippyCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6342221EF3F8700F86856 /* ZippyCountry.swift */; };
+		E9F6342521EF5C3600F86856 /* IDVertificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */; };
 		FD41403821DC72F3008543DB /* ZippyIdSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD41402E21DC72F3008543DB /* ZippyIdSDK.framework */; };
 		FD41403D21DC72F3008543DB /* ZippyIdSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41403C21DC72F3008543DB /* ZippyIdSDKTests.swift */; };
 		FD41403F21DC72F3008543DB /* ZippyIdSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = FD41403121DC72F3008543DB /* ZippyIdSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		E9F6342221EF3F8700F86856 /* ZippyCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyCountry.swift; sourceTree = "<group>"; };
+		E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDVertificationVC.swift; sourceTree = "<group>"; };
 		FD41402E21DC72F3008543DB /* ZippyIdSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZippyIdSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD41403121DC72F3008543DB /* ZippyIdSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZippyIdSDK.h; sourceTree = "<group>"; };
 		FD41403221DC72F3008543DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				FD598FB521E530F600DFE4FE /* Main.storyboard */,
 				FD598FB821E5E8A600DFE4FE /* WizardVC.swift */,
 				FD598FBA21E5E8E700DFE4FE /* TakePhotoVC.swift */,
+				E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				FD598FB921E5E8A600DFE4FE /* WizardVC.swift in Sources */,
 				FD81311D21E7D11900A30324 /* ZippyCustomerData.swift in Sources */,
 				FD41408021DC775F008543DB /* ZippyError.swift in Sources */,
+				E9F6342521EF5C3600F86856 /* IDVertificationVC.swift in Sources */,
 				FD81312D21E7DF1200A30324 /* Promise.swift in Sources */,
 				FD81311F21E7D1CD00A30324 /* ZippySessionConfig.swift in Sources */,
 				FD81312A21E7DE5100A30324 /* ApiClient.swift in Sources */,

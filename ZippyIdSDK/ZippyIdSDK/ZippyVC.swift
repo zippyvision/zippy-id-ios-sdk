@@ -17,6 +17,7 @@ public protocol ZippyVCDelegate: class {
 public class ZippyVC: UIViewController {
     public weak var delegate: ZippyVCDelegate!
     var wizardVC: WizardVC!
+    var idVertificationVC: IDVertificationVC!
     let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
     
     public override func viewDidLoad() {
@@ -31,9 +32,9 @@ public class ZippyVC: UIViewController {
         }
         
         DispatchQueue.main.async {
-            self.wizardVC = (UIStoryboard(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC)
-            self.wizardVC.delegate = self.delegate
-            self.present(self.wizardVC, animated: false, completion: nil)
+            self.idVertificationVC = (UIStoryboard(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "IDVertificationVC") as! IDVertificationVC)
+            self.idVertificationVC.delegate = self.delegate
+            self.present(self.idVertificationVC, animated: false, completion: nil)
         }
     }
 }
