@@ -30,8 +30,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID document back" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Det-Po-90L">
-                                <rect key="frame" x="50" y="152" width="139.5" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID document front" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Det-Po-90L">
+                                <rect key="frame" x="50" y="152" width="139" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -85,11 +85,12 @@
                             <constraint firstItem="EPg-Td-Jlw" firstAttribute="leading" secondItem="VKc-Se-8Ji" secondAttribute="leading" id="ISb-Un-qIA"/>
                             <constraint firstItem="jPt-9e-kyf" firstAttribute="trailing" secondItem="EPg-Td-Jlw" secondAttribute="trailing" id="OKI-8v-8YS"/>
                             <constraint firstItem="EPg-Td-Jlw" firstAttribute="top" secondItem="VKc-Se-8Ji" secondAttribute="bottom" constant="5" id="Z2o-rb-3dz"/>
+                            <constraint firstItem="fub-fq-1Cw" firstAttribute="top" secondItem="Io0-Th-ycE" secondAttribute="bottom" priority="750" constant="20" id="aLB-vO-BKM"/>
                             <constraint firstItem="VKc-Se-8Ji" firstAttribute="leading" secondItem="jPt-9e-kyf" secondAttribute="leading" constant="35" id="bnx-BV-la1"/>
                             <constraint firstItem="yiu-sR-GY4" firstAttribute="top" secondItem="hhI-of-4zO" secondAttribute="bottom" constant="20" id="dsQ-Xp-Fsx"/>
                             <constraint firstItem="fub-fq-1Cw" firstAttribute="leading" secondItem="jPt-9e-kyf" secondAttribute="leading" constant="50" id="evj-j4-xai"/>
                             <constraint firstItem="hhI-of-4zO" firstAttribute="top" secondItem="jPt-9e-kyf" secondAttribute="top" constant="50" id="iWL-XO-Kdv"/>
-                            <constraint firstItem="fub-fq-1Cw" firstAttribute="top" secondItem="Io0-Th-ycE" secondAttribute="bottom" constant="20" id="jpx-nH-D7v"/>
+                            <constraint firstItem="fub-fq-1Cw" firstAttribute="top" secondItem="Det-Po-90L" secondAttribute="bottom" priority="250" constant="20" id="jpx-nH-D7v"/>
                             <constraint firstItem="2PF-T6-IV7" firstAttribute="leading" secondItem="jPt-9e-kyf" secondAttribute="leading" constant="50" id="k5Y-2y-gdn"/>
                             <constraint firstItem="Io0-Th-ycE" firstAttribute="leading" secondItem="jPt-9e-kyf" secondAttribute="leading" constant="50" id="ldL-sz-aId"/>
                             <constraint firstItem="2PF-T6-IV7" firstAttribute="top" secondItem="fub-fq-1Cw" secondAttribute="bottom" constant="20" id="lqN-oz-0kd"/>

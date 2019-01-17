@@ -43,7 +43,7 @@ class WizardVC: UIViewController {
             photoVC.delegate = self
 
             self.present(photoVC, animated: true, completion: nil)
-        } else if documentBack == nil {
+        } else if (documentBack == nil && isPassport != true) {
             button.isEnabled = true
 
             let photoVC = UIStoryboard.init(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
@@ -73,6 +73,9 @@ class WizardVC: UIViewController {
     private var documentFront: UIImage?
     private var documentBack: UIImage?
     
+    var selectedDocument: ZippyDocumentType?
+    lazy var isPassport = selectedDocument == ZippyDocumentType.passport ? true : false
+    
     var apiClient: ApiClient!
     
     override func viewDidLoad() {
@@ -83,6 +86,10 @@ class WizardVC: UIViewController {
         assert(delegate != nil)
         
         configuration = delegate.getSessionConfiguration()
+        
+        if isPassport {
+            documentBackImageLabel.removeFromSuperview()
+        }
         
         apiClient.getToken()
             .observe { (result) in
@@ -102,7 +109,7 @@ class WizardVC: UIViewController {
     }
     
     private func send() {
-        apiClient.sendImages(token: token!, documentType: configuration.documentType, selfie: face!, documentFront: documentFront!, documentBack: documentBack!, customerUid: configuration.customerId)
+        apiClient.sendImages(token: token!, documentType: configuration.documentType, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
             .observe { (result) in
                 switch result {
                 case .error:
@@ -167,11 +174,13 @@ extension WizardVC: TakePhotoVCDelegate {
         case "documentFront":
             documentFront = resized
             self.documentFrontImageLabel.text! += " OK"
-            self.button.setTitle("Uzņemt dokumenta aizmugures attēlu", for: .normal)
+            self.button.setTitle(isPassport ? "Sūtīt" : "Uzņemt dokumenta aizmugures attēlu", for: .normal)
         case "documentBack":
-            documentBack = resized
-            self.documentBackImageLabel.text! += " OK"
-            self.button.setTitle("Sūtīt", for: .normal)
+            if !isPassport {
+                documentBack = resized
+                self.documentBackImageLabel.text! += " OK"
+                self.button.setTitle("Sūtīt", for: .normal)
+            }
         default:
             ()
         }

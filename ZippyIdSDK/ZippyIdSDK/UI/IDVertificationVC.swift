@@ -75,6 +75,7 @@ class IDVertificationVC: UIViewController  {
     @IBAction func onContinueTap(_ sender: Any) {
         self.wizardVC = (UIStoryboard(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC)
         self.wizardVC.delegate = self.delegate
+        wizardVC.selectedDocument = selectedDocument
         self.present(self.wizardVC, animated: false, completion: nil)
     }
     
