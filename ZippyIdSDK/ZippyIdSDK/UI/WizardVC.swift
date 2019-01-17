@@ -130,6 +130,12 @@ class WizardVC: UIViewController {
     private func pollJobStatus() {
         print("Trying to get status: \(count)")
         
+        if self.count == 10 {
+            self.dismiss(animated: true, completion: nil)
+            self.delegate.onCompletedWithError(error: .processingTimedOut)
+            return
+        }
+        
         apiClient
             .getJobStatus(customerId: configuration.customerId)
             .observe { (result) in
@@ -147,9 +153,6 @@ class WizardVC: UIViewController {
                     } else if result.state == .failed {
                         self.dismiss(animated: true, completion: nil)
                         self.delegate.onCompletedWithError(error: ZippyError.processingFailed)
-                    } else if self.count == 10 {
-                        self.dismiss(animated: true, completion: nil)
-                        self.delegate.onCompletedWithError(error: .processingTimedOut)
                     } else {
                         print("Scheduling poll")
                         self.count += 1
