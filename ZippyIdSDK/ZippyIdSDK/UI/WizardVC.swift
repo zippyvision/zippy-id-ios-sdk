@@ -11,15 +11,32 @@ import Foundation
 class WizardVC: UIViewController {
     @IBOutlet weak var preparingLabel: UILabel!
     @IBOutlet weak var faceImageLabel: UILabel!
+    @IBOutlet weak var faceImageDescLabel: UILabel!
     @IBOutlet weak var documentFrontImageLabel: UILabel!
+    @IBOutlet weak var documentFrontImageDescLabel: UILabel!
+    @IBOutlet weak var documentBackView: UIView!
     @IBOutlet weak var documentBackImageLabel: UILabel!
+    @IBOutlet weak var documentBackImageDescLabel: UILabel!
     @IBOutlet weak var sendingLabel: UILabel!
+    @IBOutlet weak var helpLabel: UILabel! {
+        didSet {
+            helpLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(getHelp(gesture:))))
+            helpLabel.isUserInteractionEnabled = true
+            formatHelpLabel()
+        }
+    }
     
     @IBOutlet weak var button: UIButton! {
         didSet {
             button.isEnabled = false
+            button.layer.cornerRadius = 20
         }
     }
+    
+    @IBOutlet weak var faceViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var documentFrontViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var documentBackViewHeight: NSLayoutConstraint!
+    
     @IBAction func onButtonTap(_ sender: Any) {
         if token == nil {
             button.isEnabled = false
@@ -88,7 +105,7 @@ class WizardVC: UIViewController {
         configuration = delegate.getSessionConfiguration()
         
         if isPassport {
-            documentBackImageLabel.removeFromSuperview()
+            documentBackView.removeFromSuperview()
         }
         
         apiClient.getToken()
@@ -103,6 +120,7 @@ class WizardVC: UIViewController {
                         self.preparingLabel.text! += " OK"
                         self.button.isEnabled = true
                         self.button.setTitle("Uzņemt sejas attēlu", for: .normal)
+                        self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
                     }
                 }
             }
@@ -163,6 +181,27 @@ class WizardVC: UIViewController {
                 }
             }
     }
+    
+    @objc func getHelp(gesture: UITapGestureRecognizer) {
+        let helpRange = (helpLabel.text! as NSString).range(of: "Picture example")
+        guard gesture.didTapAttributedTextInLabel(label: helpLabel, inRange: helpRange) else { return }
+        
+        // do something
+    }
+    
+    private func formatHelpLabel() {
+        let attributedString = NSMutableAttributedString(string: helpLabel.text ?? "", attributes: nil)
+        let helpRange = (helpLabel.text! as NSString).range(of: "Picture example")
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.orange, range: helpRange)
+        helpLabel.attributedText = attributedString
+    }
+    
+    func adjustViews(_ enlargeConstraint: NSLayoutConstraint?, _ decreaseConstraint: NSLayoutConstraint?, _ showLabel: UILabel?, _ hideLabel: UILabel?) {
+        enlargeConstraint?.constant = 91
+        decreaseConstraint?.constant = 41
+        showLabel?.isHidden = false
+        hideLabel?.isHidden = true
+    }
 }
 
 extension WizardVC: TakePhotoVCDelegate {
@@ -174,15 +213,18 @@ extension WizardVC: TakePhotoVCDelegate {
             face = resized
             self.faceImageLabel.text! += " OK"
             self.button.setTitle("Uzņemt dokumenta priekšas attēlu", for: .normal)
+            adjustViews(documentFrontViewHeight, faceViewHeight, documentFrontImageDescLabel, faceImageDescLabel)
         case "documentFront":
             documentFront = resized
             self.documentFrontImageLabel.text! += " OK"
             self.button.setTitle(isPassport ? "Sūtīt" : "Uzņemt dokumenta aizmugures attēlu", for: .normal)
+            adjustViews(documentBackViewHeight, documentFrontViewHeight, documentBackImageDescLabel, documentFrontImageDescLabel)
         case "documentBack":
             if !isPassport {
                 documentBack = resized
                 self.documentBackImageLabel.text! += " OK"
                 self.button.setTitle("Sūtīt", for: .normal)
+                adjustViews(nil, documentBackViewHeight, nil, documentBackImageDescLabel)
             }
         default:
             ()
@@ -208,4 +250,56 @@ extension WizardVC: TakePhotoVCDelegate {
         
         return newImage
     }
+}
+
+// https://samwize.com/2016/03/04/how-to-create-multiple-tappable-links-in-a-uilabel/
+extension UITapGestureRecognizer {
+    func didTapAttributedTextInLabel(label: UILabel, inRange targetRange: NSRange) -> Bool {
+        // Create instances of NSLayoutManager, NSTextContainer and NSTextStorage
+        let layoutManager = NSLayoutManager()
+        let textContainer = NSTextContainer(size: CGSize.zero)
+        let textStorage = NSTextStorage(attributedString: label.attributedText!)
+        
+        // Configure layoutManager and textStorage
+        layoutManager.addTextContainer(textContainer)
+        textStorage.addLayoutManager(layoutManager)
+        
+        // Configure textContainer
+        textContainer.lineFragmentPadding = 0.0
+        textContainer.lineBreakMode = label.lineBreakMode
+        textContainer.maximumNumberOfLines = label.numberOfLines
+        let labelSize = label.bounds.size
+        textContainer.size = labelSize
+        
+        // Find the tapped character location and compare it to the specified range
+        let locationOfTouchInLabel = self.location(in: label)
+        let textBoundingBox = layoutManager.usedRect(for: textContainer)
+        let textContainerOffset = CGPoint(x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x,
+                                          y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y);
+        let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x,
+                                                     y: locationOfTouchInLabel.y - textContainerOffset.y);
+        
+        let step = 10
+        return ([-1, 0, 1] * [-1, 0, 1])
+            .lazy
+            .map { (deltas) -> CGPoint in
+                return CGPoint(x: locationOfTouchInTextContainer.x + CGFloat(deltas.0 * step), y: locationOfTouchInTextContainer.y + CGFloat(deltas.1 * step))
+            }
+            .map({ (locationOfTouch) -> Bool in
+                let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouch, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+                
+                print("index of char:", indexOfCharacter)
+                return NSLocationInRange(indexOfCharacter, targetRange)
+            })
+            .contains(true)
+    }
+}
+
+// Descartes product
+// https://stackoverflow.com/a/43331492/683763
+func *<T1:Sequence, T2:Sequence>(lhs: T1,rhs : T2) -> AnySequence<(T1.Iterator.Element,T2.Iterator.Element)>
+{
+    return AnySequence (
+        lhs.lazy.flatMap { x in rhs.lazy.map { y in (x,y) }}
+    )
 }
