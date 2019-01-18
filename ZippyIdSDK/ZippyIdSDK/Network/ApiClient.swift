@@ -68,7 +68,7 @@ class ApiClient {
         let parameterString: String = postBody
             .map { "\($0.key)=\($0.value)" }
             .joined(separator: "&")
-        var request: URLRequest = URLRequest(url: URL(string: ZippyIdSDK.host + "result?" + parameterString)!)
+        var request: URLRequest = URLRequest(url: URL(string: ZippyIdSDK.host + "v1/result?" + parameterString)!)
         request.httpMethod = "GET"
         
         return session
@@ -76,6 +76,20 @@ class ApiClient {
             .transformed(with: { (data) -> ZippyResult in
                 print(String(data: data, encoding: .utf8) ?? "[unparsable]")
                 return try self.decoder.decode([ZippyResult].self, from: data).first!
+            })
+    }
+    
+    func getCountries() -> Future<[Country]> {
+        var request: URLRequest = URLRequest(url: URL(string: ZippyIdSDK.host + "sdk/countries")!)
+        request.httpMethod = "GET"
+        
+        print(request)
+        
+        return session
+            .request(request: request)
+            .transformed(with: { (data) -> [Country] in
+                print(String.init(data: data, encoding: .utf8) as Any)
+                return try self.decoder.decode([Country].self, from: data)
             })
     }
     

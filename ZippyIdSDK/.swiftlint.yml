@@ -9,6 +9,8 @@ identifier_name:
   excluded:
     - id
     - vc
+    - x
+    - y
 
 excluded:
   - Carthage

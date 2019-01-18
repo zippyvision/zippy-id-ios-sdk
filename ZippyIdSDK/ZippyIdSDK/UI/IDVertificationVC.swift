@@ -8,9 +8,9 @@
 
 import Foundation
 
-class IDVertificationVC: UIViewController  {
+class IDVertificationVC: UIViewController {
     var wizardVC: WizardVC!
-    public var delegate: ZippyVCDelegate!
+    public weak var delegate: ZippyVCDelegate!
     @IBOutlet weak var countryButton: UIButton! {
         didSet {
             countryButton.layer.cornerRadius = 20
@@ -31,41 +31,57 @@ class IDVertificationVC: UIViewController  {
         }
     }
     
+    @IBOutlet weak var pickerToolbar: UIToolbar!
+    @IBOutlet weak var pickerToolbarDoneButton: UIBarButtonItem!
     @IBOutlet weak var countryPicker: UIPickerView!
     @IBOutlet weak var documentPicker: UIPickerView!
     let countryDSD = CountryDataSourceDelegate()
     let documentDSD = DocumentDataSourceDelegate()
     
-    var selectedCountry: ZippyCountry?
-    var selectedDocument: ZippyDocumentType?
+    var countries: [Country] = []
+    var selectedCountry: Country?
+    var selectedDocument: DocumentType?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedCountry = countries[0]
-        selectedDocument = selectedCountry?.documentTypes[0]
+        let apiClient = ApiClient(secret: ZippyIdSDK.secret, key: ZippyIdSDK.key, baseUrl: ZippyIdSDK.host)
         
-        updatePickerValues()
-    
-        countryPicker.dataSource = countryDSD
-        countryPicker.delegate = countryDSD
-        
-        documentPicker.dataSource = documentDSD
-        documentPicker.delegate = documentDSD
+        apiClient
+            .getCountries()
+            .observe { (result) in
+                switch result {
+                case .error(let err):
+                    print(err)
+                case .value(let result):
+                    self.countries = result
+                    self.selectedCountry = result[0]
+                    self.selectedDocument = result[0].documentTypes[0]
+                    
+                    self.updatePickerValues()
+                    
+                    self.countryPicker.dataSource = self.countryDSD
+                    self.countryPicker.delegate = self.countryDSD
+                    
+                    self.documentPicker.dataSource = self.documentDSD
+                    self.documentPicker.delegate = self.documentDSD
+                }
+        }
     }
-    
     
     @IBAction func onCountryTap(_ sender: Any) {
         countryPicker.isHidden = false
+        pickerToolbar.isHidden = false
         documentPicker.isHidden = true
         continueButton.isHidden = true
+        countryDSD.countriesAPI = countries
         countryDSD.selectedCountry = selectedCountry
         countryDSD.selectedDocument = selectedDocument
-
     }
     
     @IBAction func onDocumentTap(_ sender: Any) {
         documentPicker.isHidden = false
+        pickerToolbar.isHidden = false
         countryPicker.isHidden = true
         continueButton.isHidden = true
         documentDSD.selectedCountry = selectedCountry
@@ -79,30 +95,28 @@ class IDVertificationVC: UIViewController  {
         self.present(self.wizardVC, animated: false, completion: nil)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch: UITouch? = touches.first
-
-        if (countryPicker.isHidden == false && touch?.view != countryPicker) {
+    @IBAction func didTapDoneButton(_ sender: Any) {
+        if !countryPicker.isHidden {
             selectedCountry = countryDSD.selectedCountry
-            // selectedDocument = selectedCountry?.documentTypes.contains(selectedDocument ?? .idCard) ?? false ? selectedDocument : selectedCountry?.documentTypes[0]
+            selectedDocument = selectedCountry?.documentTypes.contains {($0.value == selectedDocument?.value)} ?? false ? selectedDocument : selectedCountry?.documentTypes[0]
             updatePickerValues()
         }
         
-        if (documentPicker.isHidden == false && touch?.view != documentPicker) {
-            selectedDocument = documentDSD.selectedDocument
-            // selectedCountry = selectedCountry?.documentTypes.contains(selectedDocument ?? .idCard) ?? false ? selectedCountry : countries[0]
+        if !documentPicker.isHidden {
+            selectedDocument = documentDSD.selectedDocument            
+            selectedCountry = selectedCountry?.documentTypes.contains {($0.value == selectedDocument?.value)} ?? false ? selectedCountry : countries[0]
             updatePickerValues()
         }
-        
     }
     
     func updatePickerValues() {
         countryPicker.isHidden = true
         documentPicker.isHidden = true
+        pickerToolbar.isHidden = true
         continueButton.isHidden = false
         
         countryButton.setTitle(selectedCountry?.label, for: .normal)
-        documentButton.setTitle(selectedDocument?.rawValue, for: .normal)
+        documentButton.setTitle(selectedDocument?.label, for: .normal)
         
         countryDSD.selectedCountry = selectedCountry
         countryDSD.selectedDocument = selectedDocument
@@ -114,30 +128,29 @@ class IDVertificationVC: UIViewController  {
     }
 }
 
-
-class CountryDataSourceDelegate : NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
-    var selectedCountry: ZippyCountry?
-    var selectedDocument: ZippyDocumentType?
+class CountryDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
+    var countriesAPI: [Country] = []
+    var selectedCountry: Country?
+    var selectedDocument: DocumentType?
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return countries.filter { $0.documentTypes.contains(selectedDocument ?? .idCard) }.count
+        return countriesAPI.filter {$0.documentTypes.contains {($0.value == selectedDocument?.value)}}.count
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return countries.filter { $0.documentTypes.contains(selectedDocument ?? .idCard) }[row].label
+        return countriesAPI.filter {$0.documentTypes.contains {($0.value == selectedDocument?.value)}}[row].label
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedCountry = countries.filter { $0.documentTypes.contains(selectedDocument ?? .idCard) }[row]
+        selectedCountry = countriesAPI.filter {$0.documentTypes.contains {($0.value == selectedDocument?.value)}}[row]
     }
 }
 
-
-class DocumentDataSourceDelegate : NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
-    var selectedCountry: ZippyCountry?
-    var selectedDocument: ZippyDocumentType?
+class DocumentDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
+    var selectedCountry: Country?
+    var selectedDocument: DocumentType?
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -148,7 +161,7 @@ class DocumentDataSourceDelegate : NSObject, UIPickerViewDelegate, UIPickerViewD
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return (selectedCountry?.documentTypes[row]).map { $0.rawValue }
+        return selectedCountry?.documentTypes[row].label
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
