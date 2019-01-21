@@ -177,6 +177,7 @@
 				FD41402A21DC72F3008543DB /* Sources */,
 				FD41402B21DC72F3008543DB /* Frameworks */,
 				FD41402C21DC72F3008543DB /* Resources */,
+				FD526B7021F5CC9D0048FFA2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -260,6 +261,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FD526B7021F5CC9D0048FFA2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint --config .swiftlint.yml \nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FD41402A21DC72F3008543DB /* Sources */ = {

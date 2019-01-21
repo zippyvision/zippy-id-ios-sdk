@@ -9,42 +9,41 @@
 import Foundation
 
 public enum ZippyResponseState: String, Codable {
-    case processing = "processing"
-    case finished = "finished"
-    case failed = "failed"
-    case unknown = "unknown"
+    case processing
+    case finished
+    case failed
+    case unknown
     
     public init(from decoder: Decoder) throws {
-        let a: SingleValueDecodingContainer = try! decoder.singleValueContainer()
-        let val: String? = try! a.decode(String.self)
+        let valueContainer: SingleValueDecodingContainer = try! decoder.singleValueContainer()
+        let val: String? = try! valueContainer.decode(String.self)
         
         self = ZippyResponseState(rawValue: val!) ?? .unknown
     }
 }
 
 public enum ZippyImageType: String, Codable {
-    case selfie = "selfie"
-    case id_front = "id_front"
-    case id_back = "id_back"
-    case payslip = "payslip"
-    case proof_of_residence = "proof_of_residence"
-    case unknown = "unknown"
-    
+    case selfie
+    case idFront = "id_front"
+    case idBack = "id_back"
+    case payslip
+    case proofOfResidence = "proof_of_residence"
+    case unknown
     
     public init(from decoder: Decoder) throws {
-        let a: SingleValueDecodingContainer = try! decoder.singleValueContainer()
-        let val: String? = try! a.decode(String.self)
+        let valueContainer: SingleValueDecodingContainer = try! decoder.singleValueContainer()
+        let val: String? = try! valueContainer.decode(String.self)
         
         self = ZippyImageType(rawValue: val!) ?? .unknown
     }
 }
 
 public struct ZippyResult: Codable {
-    public var created_at: String
+    public var createdAt: String
     public var customerData: ZippyCustomerData?
-    public var finished_at: String?
+    public var finishedAt: String?
     public var state: ZippyResponseState?
-    public var processing_errors: [String: [String]]
+    public var processingErrors: [String: [String]]?
     
     /*
      Can't use enum here because of
@@ -55,4 +54,8 @@ public struct ZippyResult: Codable {
     //    "face_similarity": null,
     //    "similar_faces": {},
     //    "face_id": null
+    
+    private enum CodingKeys: String, CodingKey {
+        case createdAt = "created_at", customerData, finishedAt = "finished_at", state, processingErrors = "processing_errors", images
+    }
 }

@@ -23,7 +23,6 @@ class CameraController: NSObject {
     var rearCamera: AVCaptureDevice?
     var rearCameraInput: AVCaptureDeviceInput?
     
-    
     var previewLayer: AVCaptureVideoPreviewLayer?
     
     var flashMode = AVCaptureDevice.FlashMode.off
@@ -65,25 +64,23 @@ extension CameraController {
                 if captureSession.canAddInput(self.rearCameraInput!) { captureSession.addInput(self.rearCameraInput!) }
                 
                 self.currentCameraPosition = .rear
-            }
-                
-            else if let frontCamera = self.frontCamera {
+            } else if let frontCamera = self.frontCamera {
                 self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
                 
                 if captureSession.canAddInput(self.frontCameraInput!) { captureSession.addInput(self.frontCameraInput!) }
                 else { throw ZippyError.cameraInputsAreInvalid }
                 
                 self.currentCameraPosition = .front
+            } else {
+                throw ZippyError.cameraNoCamerasAvailable
             }
-                
-            else { throw ZippyError.cameraNoCamerasAvailable }
         }
         
         func configurePhotoOutput() throws {
             guard let captureSession = self.captureSession else { throw ZippyError.cameraCaptureSessionIsMissing }
             
             self.photoOutput = AVCapturePhotoOutput()
-            self.photoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])], completionHandler: nil)
+            self.photoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
             
             if captureSession.canAddOutput(self.photoOutput!) { captureSession.addOutput(self.photoOutput!) }
             captureSession.startRunning()
@@ -95,9 +92,7 @@ extension CameraController {
                 try configureCaptureDevices()
                 try configureDeviceInputs()
                 try configurePhotoOutput()
-            }
-                
-            catch {
+            } catch {
                 DispatchQueue.main.async {
                     completionHandler(ZippyError.cameraWrappedError(error))
                 }
@@ -111,7 +106,6 @@ extension CameraController {
         }
     }
     
-    
     func displayPreview(on view: UIView) throws {
         guard let captureSession = self.captureSession, captureSession.isRunning else { throw ZippyError.cameraCaptureSessionIsMissing }
         
@@ -122,7 +116,6 @@ extension CameraController {
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
     }
-    
     
     func switchCameras() throws {
         guard let currentCameraPosition = currentCameraPosition, let captureSession = self.captureSession, captureSession.isRunning else { throw ZippyError.cameraCaptureSessionIsMissing }

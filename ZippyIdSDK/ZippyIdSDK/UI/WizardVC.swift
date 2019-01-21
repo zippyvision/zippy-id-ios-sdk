@@ -86,8 +86,8 @@ class WizardVC: UIViewController {
         
         apiClient.getToken()
             .observe { (result) in
-                switch (result) {
-                case .error(_):
+                switch result {
+                case .error:
                     ()
                 case .value(let token):
                     self.token = token
@@ -104,8 +104,8 @@ class WizardVC: UIViewController {
     private func send() {
         apiClient.sendImages(token: token!, documentType: configuration.documentType, selfie: face!, documentFront: documentFront!, documentBack: documentBack!, customerUid: configuration.customerId)
             .observe { (result) in
-                switch (result) {
-                case .error(_):
+                switch result {
+                case .error:
                     ()
                 case .value(let id):
                     print("Submited with ID = \(id)")
@@ -126,7 +126,7 @@ class WizardVC: UIViewController {
         apiClient
             .getJobStatus(customerId: configuration.customerId)
             .observe { (result) in
-                switch(result) {
+                switch result {
                 case .error(let err):
                     print(err)
                     self.count += 1

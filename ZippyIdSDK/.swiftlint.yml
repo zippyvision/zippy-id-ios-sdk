@@ -1,0 +1,15 @@
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+  - trailing_comma
+
+force_cast: warning
+force_try: warning
+
+excluded:
+  - Carthage
+  - Pods
+
+file_length:
+  warning: 500
+  error: 1200

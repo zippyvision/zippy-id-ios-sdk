@@ -8,6 +8,7 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 public struct ZippyCustomerData: Codable {
     public var full_name: String?
     public var first_name: String?
