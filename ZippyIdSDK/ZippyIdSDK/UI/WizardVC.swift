@@ -60,7 +60,7 @@ class WizardVC: UIViewController {
         }
     }
     
-    public var delegate: ZippyVCDelegate!
+    public weak var delegate: ZippyVCDelegate!
     
     private let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
     private let decoder = JSONDecoder()
@@ -68,10 +68,10 @@ class WizardVC: UIViewController {
     private var configuration: ZippySessionConfig! = nil
     private var currentImage: String = "none"
     
-    private var token: String? = nil
-    private var face: UIImage? = nil
-    private var documentFront: UIImage? = nil
-    private var documentBack: UIImage? = nil
+    private var token: String?
+    private var face: UIImage?
+    private var documentFront: UIImage?
+    private var documentBack: UIImage?
     
     var apiClient: ApiClient!
     

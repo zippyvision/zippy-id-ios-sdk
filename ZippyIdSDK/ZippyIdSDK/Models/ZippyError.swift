@@ -12,7 +12,6 @@ public enum ZippyError: Error {
     case processingTimedOut
     case processingFailed
     
-    
     case cameraCaptureSessionAlreadyRunning
     case cameraCaptureSessionIsMissing
     case cameraInputsAreInvalid

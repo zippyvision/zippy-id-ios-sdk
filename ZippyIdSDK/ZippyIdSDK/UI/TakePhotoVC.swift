@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TakePhotoVCDelegate {
+protocol TakePhotoVCDelegate: class {
     func onSuccess(vc: TakePhotoVC, image: UIImage)
     func onError(vc: TakePhotoVC, error: ZippyError)
 }
@@ -16,7 +16,7 @@ protocol TakePhotoVCDelegate {
 class TakePhotoVC: UIViewController {
     @IBOutlet weak var cameraView: UIView!
     let cameraController = CameraController()
-    var delegate: TakePhotoVCDelegate! = nil
+    weak var delegate: TakePhotoVCDelegate! = nil
     
     @IBAction func onClickTap(_ sender: Any) {
         cameraController.captureImage {[weak self] (image, error) in

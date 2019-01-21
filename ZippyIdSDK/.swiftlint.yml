@@ -5,6 +5,10 @@ disabled_rules:
 
 force_cast: warning
 force_try: warning
+identifier_name:
+  excluded:
+    - id
+    - vc
 
 excluded:
   - Carthage

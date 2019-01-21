@@ -67,8 +67,11 @@ extension CameraController {
             } else if let frontCamera = self.frontCamera {
                 self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
                 
-                if captureSession.canAddInput(self.frontCameraInput!) { captureSession.addInput(self.frontCameraInput!) }
-                else { throw ZippyError.cameraInputsAreInvalid }
+                if captureSession.canAddInput(self.frontCameraInput!) {
+                    captureSession.addInput(self.frontCameraInput!)
+                } else {
+                    throw ZippyError.cameraInputsAreInvalid
+                }
                 
                 self.currentCameraPosition = .front
             } else {
@@ -135,9 +138,7 @@ extension CameraController {
                 captureSession.addInput(self.frontCameraInput!)
                 
                 self.currentCameraPosition = .front
-            }
-                
-            else {
+            } else {
                 throw ZippyError.cameraInvalidOperation
             }
         }
@@ -155,9 +156,9 @@ extension CameraController {
                 captureSession.addInput(self.rearCameraInput!)
                 
                 self.currentCameraPosition = .rear
+            } else {
+                throw ZippyError.cameraInvalidOperation
             }
-                
-            else { throw ZippyError.cameraInvalidOperation }
         }
         
         switch currentCameraPosition {
@@ -185,15 +186,11 @@ extension CameraController {
 extension CameraController: AVCapturePhotoCaptureDelegate {
     public func photoOutput(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?, previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
                             resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Swift.Error?) {
-        if let error = error { self.photoCaptureCompletionBlock?(nil, ZippyError.cameraWrappedError(error)) }
-            
-        else if let buffer = photoSampleBuffer, let data = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: nil),
-            let image = UIImage(data: data) {
-            
+        if let error = error {
+            self.photoCaptureCompletionBlock?(nil, ZippyError.cameraWrappedError(error))
+        } else if let buffer = photoSampleBuffer, let data = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: nil), let image = UIImage(data: data) {
             self.photoCaptureCompletionBlock?(image, nil)
-        }
-            
-        else {
+        } else {
             self.photoCaptureCompletionBlock?(nil, ZippyError.cameraUnknown)
         }
     }

@@ -8,14 +8,14 @@
 
 import Foundation
 
-public protocol ZippyVCDelegate {
+public protocol ZippyVCDelegate: class {
     func getSessionConfiguration() -> ZippySessionConfig
     func onCompletedSuccessfully(result: ZippyResult)
     func onCompletedWithError(error: ZippyError)
 }
 
 public class ZippyVC: UIViewController {
-    public var delegate: ZippyVCDelegate!
+    public weak var delegate: ZippyVCDelegate!
     var wizardVC: WizardVC!
     let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
     

@@ -8,29 +8,32 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name
 public struct ZippyCustomerData: Codable {
-    public var full_name: String?
-    public var first_name: String?
-    public var middle_name: String?
-    public var last_name: String?
-    public var province_1: String?
-    public var province_2: String?
+    public var fullName: String?
+    public var firstName: String?
+    public var middleName: String?
+    public var lastName: String?
+    public var province1: String?
+    public var province2: String?
     public var city: String?
     public var state: String?
     public var gender: String?
     public var address: String?
     public var religion: String?
-    public var zip_code: String?
-    public var birth_date: String?
-    public var blood_type: String?
+    public var zipCode: String?
+    public var birthDate: String?
+    public var bloodType: String?
     public var occupation: String?
-    public var birth_place: String?
+    public var birthPlace: String?
     public var nationality: String?
-    public var document_date: String?
-    public var personal_code: String?
-    public var validity_date: String?
-    public var marital_status: String?
-    public var document_issuer: String?
-    public var document_number: String?
+    public var documentDate: String?
+    public var personalCode: String?
+    public var validityDate: String?
+    public var maritalStatus: String?
+    public var documentIssuer: String?
+    public var documentNumber: String?
+    
+    private enum CodingKeys: String, CodingKey {
+        case fullName = "full_name", firstName = "first_name", middleName = "middle_name", lastName = "last_name", province1 = "province_1", province2 = "province_2", city, state, gender, address, religion, zipCode = "zip_code", birthDate = "birth_date", bloodType = "blood_type", occupation, birthPlace = "birth_place", nationality, documentDate = "document_date", personalCode = "personal_code", validityDate = "validity_date", maritalStatus = "marital_status", documentIssuer = "document_issuer", documentNumber = "document_number"
+    }
 }

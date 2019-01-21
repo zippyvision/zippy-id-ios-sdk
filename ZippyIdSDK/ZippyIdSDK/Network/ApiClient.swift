@@ -74,7 +74,7 @@ class ApiClient {
         return session
             .request(request: request)
             .transformed(with: { (data) -> ZippyResult in
-                print(String.init(data: data, encoding: .utf8))
+                print(String(data: data, encoding: .utf8))
                 return try self.decoder.decode([ZippyResult].self, from: data).first!
             })
     }
