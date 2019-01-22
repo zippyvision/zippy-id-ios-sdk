@@ -22,7 +22,10 @@ class ApiClient {
     }
     
     func getToken() -> Future<String> {
-        var request: URLRequest = URLRequest(url: URL(string: baseUrl + "request_tokens")!)
+        let url: URL = URL(string: baseUrl)!
+            .appendingPathComponent("v1")
+            .appendingPathComponent("request_tokens")
+        var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = "api_key=\(key)&secret_key=\(secret)".data(using: .utf8)
         
@@ -34,8 +37,11 @@ class ApiClient {
             })
     }
     
-    func sendImages(token: String, documentType: ZippyDocumentType, selfie: UIImage, documentFront: UIImage, documentBack: UIImage, customerUid: String) -> Future<String> {
-        var request: URLRequest = URLRequest(url: URL(string: baseUrl + "verifications")!)
+    func sendImages(token: String, documentType: ZippyDocumentType, selfie: UIImage, documentFront: UIImage, documentBack: UIImage?, customerUid: String) -> Future<String> {
+        let url: URL = URL(string: baseUrl)!
+            .appendingPathComponent("v1")
+            .appendingPathComponent("verifications")
+        var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "POST"
         let postBody: [String: String] = [
             "token": token,
@@ -43,9 +49,9 @@ class ApiClient {
             "document_type": documentType.rawValue,
             "image_data[selfie]": "data:image/png;base64," + convertToFormParam(image: selfie),
             "image_data[idFront]": "data:image/png;base64," + convertToFormParam(image: documentFront),
-            "image_data[idBack]": "data:image/png;base64," + convertToFormParam(image: documentBack),
+            "image_data[idBack]": ((documentBack != nil) ? "data:image/png;base64," + convertToFormParam(image: documentBack!) : "no image"),
             "customer_uid": customerUid,
-            ]
+        ]
         let postBodyString: String = postBody
             .map { "\($0.key)=\($0.value)" }
             .joined(separator: "&")
@@ -60,15 +66,18 @@ class ApiClient {
     }
     
     func getJobStatus(customerId: String) -> Future<ZippyResult> {
-        let postBody: [String: String] = [
+        let url: URL = URL(string: baseUrl)!
+            .appendingPathComponent("v1")
+            .appendingPathComponent("result")
+        let params: [String: String] = [
             "customer_uid": customerId,
             "secret_key": secret,
             "api_key": key,
         ]
-        let parameterString: String = postBody
-            .map { "\($0.key)=\($0.value)" }
-            .joined(separator: "&")
-        var request: URLRequest = URLRequest(url: URL(string: ZippyIdSDK.host + "result?" + parameterString)!)
+        
+        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+        urlComponents.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }
+        var request: URLRequest = URLRequest(url: urlComponents.url!)
         request.httpMethod = "GET"
         
         return session
@@ -76,6 +85,18 @@ class ApiClient {
             .transformed(with: { (data) -> ZippyResult in
                 print(String(data: data, encoding: .utf8) ?? "[unparsable]")
                 return try self.decoder.decode([ZippyResult].self, from: data).first!
+            })
+    }
+    
+    func getCountries() -> Future<[Country]> {
+        var request: URLRequest = URLRequest(url: URL(string: ZippyIdSDK.host + "sdk/countries")!)
+        request.httpMethod = "GET"
+        
+        return session
+            .request(request: request)
+            .transformed(with: { (data) -> [Country] in
+                print(String.init(data: data, encoding: .utf8) as Any)
+                return try self.decoder.decode([Country].self, from: data)
             })
     }
     

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E93F93C921F0E75200320CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E93F93C821F0E75100320CF8 /* Assets.xcassets */; };
+		E9F6342321EF3F8700F86856 /* ZippyCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6342221EF3F8700F86856 /* ZippyCountry.swift */; };
+		E9F6342521EF5C3600F86856 /* IDVertificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */; };
 		FD41403821DC72F3008543DB /* ZippyIdSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD41402E21DC72F3008543DB /* ZippyIdSDK.framework */; };
 		FD41403D21DC72F3008543DB /* ZippyIdSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41403C21DC72F3008543DB /* ZippyIdSDKTests.swift */; };
 		FD41403F21DC72F3008543DB /* ZippyIdSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = FD41403121DC72F3008543DB /* ZippyIdSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -36,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E93F93C821F0E75100320CF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E9F6342221EF3F8700F86856 /* ZippyCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyCountry.swift; sourceTree = "<group>"; };
+		E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDVertificationVC.swift; sourceTree = "<group>"; };
 		FD41402E21DC72F3008543DB /* ZippyIdSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZippyIdSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD41403121DC72F3008543DB /* ZippyIdSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZippyIdSDK.h; sourceTree = "<group>"; };
 		FD41403221DC72F3008543DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +102,7 @@
 		FD41403021DC72F3008543DB /* ZippyIdSDK */ = {
 			isa = PBXGroup;
 			children = (
+				E93F93C821F0E75100320CF8 /* Assets.xcassets */,
 				FD81312B21E7DF0500A30324 /* Utils */,
 				FD81312821E7DE4000A30324 /* Network */,
 				FD598FB721E5E89100DFE4FE /* UI */,
@@ -125,6 +132,7 @@
 				FD41407F21DC775F008543DB /* ZippyError.swift */,
 				FD81311C21E7D11900A30324 /* ZippyCustomerData.swift */,
 				FD81311E21E7D1CD00A30324 /* ZippySessionConfig.swift */,
+				E9F6342221EF3F8700F86856 /* ZippyCountry.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -135,6 +143,7 @@
 				FD598FB521E530F600DFE4FE /* Main.storyboard */,
 				FD598FB821E5E8A600DFE4FE /* WizardVC.swift */,
 				FD598FBA21E5E8E700DFE4FE /* TakePhotoVC.swift */,
+				E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -249,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD41407E21DC7612008543DB /* ZippyVC.swift in Resources */,
+				E93F93C921F0E75200320CF8 /* Assets.xcassets in Resources */,
 				FD598FB621E530F600DFE4FE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -292,9 +302,11 @@
 				FD41406D21DC73BA008543DB /* ZippyIdSDK.swift in Sources */,
 				FD598FBB21E5E8E700DFE4FE /* TakePhotoVC.swift in Sources */,
 				FD41407421DC7415008543DB /* ZippyResult.swift in Sources */,
+				E9F6342321EF3F8700F86856 /* ZippyCountry.swift in Sources */,
 				FD598FB921E5E8A600DFE4FE /* WizardVC.swift in Sources */,
 				FD81311D21E7D11900A30324 /* ZippyCustomerData.swift in Sources */,
 				FD41408021DC775F008543DB /* ZippyError.swift in Sources */,
+				E9F6342521EF5C3600F86856 /* IDVertificationVC.swift in Sources */,
 				FD81312D21E7DF1200A30324 /* Promise.swift in Sources */,
 				FD81311F21E7D1CD00A30324 /* ZippySessionConfig.swift in Sources */,
 				FD81312A21E7DE5100A30324 /* ApiClient.swift in Sources */,
@@ -372,7 +384,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -430,7 +442,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -455,6 +467,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ZippyIdSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -482,6 +495,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ZippyIdSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

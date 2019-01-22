@@ -100,11 +100,13 @@ extension URLSession {
     }
     
     func request(request: URLRequest) -> Future<Data> {
+        print("API requesting:", request)
+        
         let promise = Promise<Data>()
         
         let task = dataTask(with: request) { data, urlResponse, error in
             if let statusCode = (urlResponse as? HTTPURLResponse)?.statusCode {
-                print("Status code:", statusCode)
+                print("API response status code:", request, statusCode)
             }
             
             if let error = error {

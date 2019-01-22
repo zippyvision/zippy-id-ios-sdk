@@ -16,7 +16,10 @@ protocol TakePhotoVCDelegate: class {
 class TakePhotoVC: UIViewController {
     @IBOutlet weak var cameraView: UIView!
     let cameraController = CameraController()
+    @IBOutlet weak var frameImageView: UIImageView!
+    @IBOutlet weak var faceFrameImageView: UIImageView!
     weak var delegate: TakePhotoVCDelegate! = nil
+    var mode: ZippyImageMode = .none
     
     @IBAction func onClickTap(_ sender: Any) {
         cameraController.captureImage {[weak self] (image, error) in
@@ -53,6 +56,32 @@ class TakePhotoVC: UIViewController {
                 self.delegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
                 return
             }
+            self.adjustCameraMode()
+        }
+    }
+    
+    func adjustCameraMode() {
+        switch mode {
+        case .face:
+            switchCameras()
+            frameImageView.isHidden = false
+            faceFrameImageView.isHidden = true
+        case .documentFront:
+            frameImageView.isHidden = true
+            faceFrameImageView.isHidden = false
+        case .documentBack:
+            frameImageView.isHidden = false
+            faceFrameImageView.isHidden = true
+        case .none:
+            print("error")
+        }
+    }
+    
+    func switchCameras() {
+        do {
+            try cameraController.switchCameras()
+        } catch {
+            print(error)
         }
     }
 }
