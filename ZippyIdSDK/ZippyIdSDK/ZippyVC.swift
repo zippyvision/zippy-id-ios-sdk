@@ -32,7 +32,8 @@ public class ZippyVC: UIViewController {
         }
         
         DispatchQueue.main.async {
-            self.idVertificationVC = (UIStoryboard(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "IDVertificationVC") as! IDVertificationVC)
+            let bundle = Bundle(for: ZippyVC.self)
+            self.idVertificationVC = (UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "IDVertificationVC") as! IDVertificationVC)
             self.idVertificationVC.delegate = self.delegate
             self.present(self.idVertificationVC, animated: false, completion: nil)
         }

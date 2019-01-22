@@ -1,0 +1,4 @@
+target 'ZippyIdSDKDemo' do
+  use_frameworks!
+  pod 'ZippyIdSDK', :path => '..'
+end

@@ -9,7 +9,6 @@
 import Foundation
 
 public class ZippyIdSDK {
-    static let resourcesBundle = Bundle(identifier: "com.zippyid.ZippyIdSDK")!
     static let host = "https://demo.zippyid.com/api/"
     
     static var isInitialized = false

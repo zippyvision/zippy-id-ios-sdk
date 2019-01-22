@@ -45,12 +45,14 @@ class WizardVC: UIViewController {
     @IBOutlet weak var documentBackViewHeight: NSLayoutConstraint!
     
     @IBAction func onButtonTap(_ sender: Any) {
+        let bundle = Bundle(for: ZippyVC.self)
+        
         if token == nil {
             button.isEnabled = false
         } else if face == nil {
             button.isEnabled = true
             
-            let photoVC = UIStoryboard.init(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
+            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
             
             currentImage = .face
             photoVC.delegate = self
@@ -59,7 +61,7 @@ class WizardVC: UIViewController {
         } else if documentFront == nil {
             button.isEnabled = true
 
-            let photoVC = UIStoryboard.init(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
+            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
             
             currentImage = .documentFront
             photoVC.delegate = self
@@ -68,7 +70,7 @@ class WizardVC: UIViewController {
         } else if documentBack == nil && isPassport != true {
             button.isEnabled = true
 
-            let photoVC = UIStoryboard.init(name: "Main", bundle: ZippyIdSDK.resourcesBundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
+            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
             
             currentImage = .documentBack
             photoVC.delegate = self

@@ -29,6 +29,7 @@ class CameraController: NSObject {
     var photoCaptureCompletionBlock: ((UIImage?, ZippyError?) -> Void)?
 }
 
+@available(iOS 10.0, *)
 extension CameraController {
     func prepare(completionHandler: @escaping (ZippyError?) -> Void) {
         func createCaptureSession() {

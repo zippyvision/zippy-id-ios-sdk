@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:ZippyIdSDKDemo/ZippyIdSDKDemo.xcodeproj">
+      location = "group:ZippyIdSDKDemo.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ZippyIdSDK/ZippyIdSDK.xcodeproj">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

@@ -7,30 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD5989B74859ED0AB5DE1D87 /* Pods_ZippyIdSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1A547E9472716E1D314F26C /* Pods_ZippyIdSDKDemo.framework */; };
 		FD41405521DC7310008543DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41405421DC7310008543DB /* AppDelegate.swift */; };
 		FD41405721DC7310008543DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD41405621DC7310008543DB /* ViewController.swift */; };
 		FD41405A21DC7310008543DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD41405821DC7310008543DB /* Main.storyboard */; };
 		FD41405C21DC7312008543DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD41405B21DC7312008543DB /* Assets.xcassets */; };
 		FD41405F21DC7312008543DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD41405D21DC7312008543DB /* LaunchScreen.storyboard */; };
-		FD41407921DC7482008543DB /* ZippyIdSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD41407821DC7482008543DB /* ZippyIdSDK.framework */; };
-		FD81311921E74A0600A30324 /* ZippyIdSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FD41407821DC7482008543DB /* ZippyIdSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		FD41407D21DC758F008543DB /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				FD81311921E74A0600A30324 /* ZippyIdSDK.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		3818885D178299E58A1AE9A8 /* Pods-ZippyIdSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZippyIdSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZippyIdSDKDemo/Pods-ZippyIdSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		C1A547E9472716E1D314F26C /* Pods_ZippyIdSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZippyIdSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2CBC5D1FAFEFA7F3AB62B1B /* Pods-ZippyIdSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZippyIdSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZippyIdSDKDemo/Pods-ZippyIdSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		FD41405121DC7310008543DB /* ZippyIdSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZippyIdSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD41405421DC7310008543DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FD41405621DC7310008543DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,19 +34,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD41407921DC7482008543DB /* ZippyIdSDK.framework in Frameworks */,
+				AD5989B74859ED0AB5DE1D87 /* Pods_ZippyIdSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B96E11B26BC48D24667576CD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3818885D178299E58A1AE9A8 /* Pods-ZippyIdSDKDemo.debug.xcconfig */,
+				E2CBC5D1FAFEFA7F3AB62B1B /* Pods-ZippyIdSDKDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		FD41404821DC7310008543DB = {
 			isa = PBXGroup;
 			children = (
 				FD41405321DC7310008543DB /* ZippyIdSDKDemo */,
 				FD41405221DC7310008543DB /* Products */,
 				FD41407721DC7482008543DB /* Frameworks */,
+				B96E11B26BC48D24667576CD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				FD41407821DC7482008543DB /* ZippyIdSDK.framework */,
+				C1A547E9472716E1D314F26C /* Pods_ZippyIdSDKDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -98,10 +97,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FD41406321DC7312008543DB /* Build configuration list for PBXNativeTarget "ZippyIdSDKDemo" */;
 			buildPhases = (
+				07B0F92A8B5C6F41F4C4A114 /* [CP] Check Pods Manifest.lock */,
 				FD41404D21DC7310008543DB /* Sources */,
 				FD41404E21DC7310008543DB /* Frameworks */,
 				FD41404F21DC7310008543DB /* Resources */,
-				FD41407D21DC758F008543DB /* Embed Frameworks */,
+				0E84B5922450989A5EF2FD76 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -157,6 +157,53 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		07B0F92A8B5C6F41F4C4A114 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZippyIdSDKDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0E84B5922450989A5EF2FD76 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ZippyIdSDKDemo/Pods-ZippyIdSDKDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ZippyIdSDK/ZippyIdSDK.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZippyIdSDK.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZippyIdSDKDemo/Pods-ZippyIdSDKDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FD41404D21DC7310008543DB /* Sources */ = {
@@ -308,11 +355,12 @@
 		};
 		FD41406421DC7312008543DB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3818885D178299E58A1AE9A8 /* Pods-ZippyIdSDKDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 655Q6EPK26;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ZippyIdSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -329,11 +377,12 @@
 		};
 		FD41406521DC7312008543DB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2CBC5D1FAFEFA7F3AB62B1B /* Pods-ZippyIdSDKDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 655Q6EPK26;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ZippyIdSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
