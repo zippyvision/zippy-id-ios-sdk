@@ -11,6 +11,7 @@ import Foundation
 class IDVertificationVC: UIViewController {
     var wizardVC: WizardVC!
     public weak var delegate: ZippyVCDelegate!
+    @IBOutlet weak var loaderView: UIActivityIndicatorView!
     @IBOutlet weak var countryButton: UIButton! {
         didSet {
             countryButton.layer.cornerRadius = 20
@@ -33,14 +34,53 @@ class IDVertificationVC: UIViewController {
     
     @IBOutlet weak var pickerToolbar: UIToolbar!
     @IBOutlet weak var pickerToolbarDoneButton: UIBarButtonItem!
-    @IBOutlet weak var countryPicker: UIPickerView!
-    @IBOutlet weak var documentPicker: UIPickerView!
+    @IBOutlet weak var countryPicker: UIPickerView! {
+        didSet {
+            self.countryPicker.dataSource = self.countryDSD
+            self.countryPicker.delegate = self.countryDSD
+        }
+    }
+    @IBOutlet weak var documentPicker: UIPickerView! {
+        didSet {
+            self.documentPicker.dataSource = self.documentDSD
+            self.documentPicker.delegate = self.documentDSD
+        }
+    }
     let countryDSD = CountryDataSourceDelegate()
     let documentDSD = DocumentDataSourceDelegate()
     
-    var countries: [Country] = []
-    var selectedCountry: Country?
-    var selectedDocument: DocumentType?
+    var countries: [Country] = [] {
+        didSet {
+            countryDSD.countriesAPI = countries
+            
+            if let selectedCountry = countries.first {
+                self.selectedCountry = selectedCountry
+            }
+            if let selectedDocument = countries.first?.documentTypes.first {
+                self.selectedDocument = selectedDocument
+            }
+        }
+    }
+    var selectedCountry: Country? {
+        didSet {
+            countryButton?.setTitle(selectedCountry?.label, for: .normal)
+            documentDSD.selectedCountry = selectedCountry
+            countryDSD.selectedCountry = selectedCountry
+            
+            countryPicker.reloadAllComponents()
+            documentPicker.reloadAllComponents()
+        }
+    }
+    var selectedDocument: DocumentType? {
+        didSet {
+            documentButton?.setTitle(selectedDocument?.label, for: .normal)
+            documentDSD.selectedDocument = selectedDocument
+            countryDSD.selectedDocument = selectedDocument
+            
+            countryPicker.reloadAllComponents()
+            documentPicker.reloadAllComponents()
+        }
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,22 +90,14 @@ class IDVertificationVC: UIViewController {
         apiClient
             .getCountries()
             .observe { (result) in
-                switch result {
-                case .error(let err):
-                    print(err)
-                case .value(let result):
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    switch result {
+                    case .error(let err):
+                        self.delegate.onCompletedWithError(error: ZippyError.otherError(err))
+                    case .value(let result):
+                        self.loaderView.isHidden = true
+                        
                         self.countries = result
-                        self.selectedCountry = result[0]
-                        self.selectedDocument = result[0].documentTypes[0]
-                        
-                        self.updatePickerValues()
-                        
-                        self.countryPicker.dataSource = self.countryDSD
-                        self.countryPicker.delegate = self.countryDSD
-                        
-                        self.documentPicker.dataSource = self.documentDSD
-                        self.documentPicker.delegate = self.documentDSD
                     }
                 }
         }
@@ -76,9 +108,6 @@ class IDVertificationVC: UIViewController {
         pickerToolbar.isHidden = false
         documentPicker.isHidden = true
         continueButton.isHidden = true
-        countryDSD.countriesAPI = countries
-        countryDSD.selectedCountry = selectedCountry
-        countryDSD.selectedDocument = selectedDocument
     }
     
     @IBAction func onDocumentTap(_ sender: Any) {
@@ -86,8 +115,6 @@ class IDVertificationVC: UIViewController {
         pickerToolbar.isHidden = false
         countryPicker.isHidden = true
         continueButton.isHidden = true
-        documentDSD.selectedCountry = selectedCountry
-        documentDSD.selectedDocument = selectedDocument
     }
     
     @IBAction func onContinueTap(_ sender: Any) {
@@ -101,32 +128,21 @@ class IDVertificationVC: UIViewController {
         if !countryPicker.isHidden {
             selectedCountry = countryDSD.selectedCountry
             selectedDocument = selectedCountry?.documentTypes.contains {($0.value == selectedDocument?.value)} ?? false ? selectedDocument : selectedCountry?.documentTypes[0]
-            updatePickerValues()
+            hidePickers()
         }
         
         if !documentPicker.isHidden {
             selectedDocument = documentDSD.selectedDocument            
             selectedCountry = selectedCountry?.documentTypes.contains {($0.value == selectedDocument?.value)} ?? false ? selectedCountry : countries[0]
-            updatePickerValues()
+            hidePickers()
         }
     }
     
-    func updatePickerValues() {
+    func hidePickers() {
         countryPicker.isHidden = true
         documentPicker.isHidden = true
         pickerToolbar.isHidden = true
         continueButton.isHidden = false
-        
-        countryButton.setTitle(selectedCountry?.label, for: .normal)
-        documentButton.setTitle(selectedDocument?.label, for: .normal)
-        
-        countryDSD.selectedCountry = selectedCountry
-        countryDSD.selectedDocument = selectedDocument
-        documentDSD.selectedCountry = selectedCountry
-        documentDSD.selectedDocument = selectedDocument
-        
-        countryPicker.reloadAllComponents()
-        documentPicker.reloadAllComponents()
     }
 }
 

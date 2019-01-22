@@ -19,4 +19,6 @@ public enum ZippyError: Error {
     case cameraNoCamerasAvailable
     case cameraWrappedError(Error)
     case cameraUnknown
+    
+    case otherError(Error?)
 }

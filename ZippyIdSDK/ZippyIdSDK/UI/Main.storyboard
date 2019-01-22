@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.3.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -95,14 +95,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID Vertification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="noX-S4-9f7">
-                                <rect key="frame" x="50" y="70" width="188" height="36"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID Verification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="noX-S4-9f7">
+                                <rect key="frame" x="50" y="70" width="179" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SxS-98-dHe">
-                                <rect key="frame" x="50" y="397" width="225" height="45"/>
+                                <rect key="frame" x="50" y="357" width="275" height="45"/>
                                 <color key="backgroundColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="8vd-2f-5dp"/>
@@ -114,17 +114,18 @@
                                     <action selector="onContinueTap:" destination="1ce-h3-Dkw" eventType="touchUpInside" id="sJD-pQ-ISI"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select the ID document you will use for vertification and your country" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DbJ-aF-pSY">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select the ID document you will use for verification and your country" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DbJ-aF-pSY">
                                 <rect key="frame" x="50" y="121" width="275" height="61"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQJ-cK-ROL">
-                                <rect key="frame" x="50" y="222" width="275" height="50"/>
+                                <rect key="frame" x="50" y="202" width="275" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="yhw-pQ-dgi"/>
                                 </constraints>
+                                <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="Latvia">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -133,10 +134,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BT3-Vm-5fU">
-                                <rect key="frame" x="50" y="297" width="275" height="50"/>
+                                <rect key="frame" x="50" y="277" width="275" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="fCM-oc-lky"/>
                                 </constraints>
+                                <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="ID card">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -173,25 +175,34 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LzN-81-WOu">
+                                <rect key="frame" x="16" y="20" width="343" height="647"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <color key="color" red="1" green="0.57647058823529407" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="LzN-81-WOu" firstAttribute="top" secondItem="eSw-uR-hFh" secondAttribute="topMargin" id="0yE-Dx-iej"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="LzN-81-WOu" secondAttribute="bottom" id="12R-q0-T3l"/>
                             <constraint firstItem="FLZ-L4-Xzk" firstAttribute="leading" secondItem="2bQ-hi-vc6" secondAttribute="leading" id="3Wr-JE-gC7"/>
                             <constraint firstItem="dzn-XY-moQ" firstAttribute="top" secondItem="huH-L9-NBr" secondAttribute="bottom" priority="750" id="4np-6H-EwN"/>
                             <constraint firstItem="dzn-XY-moQ" firstAttribute="leading" secondItem="2bQ-hi-vc6" secondAttribute="leading" id="BFC-D1-KfZ"/>
                             <constraint firstItem="dzn-XY-moQ" firstAttribute="bottom" secondItem="2bQ-hi-vc6" secondAttribute="bottom" id="Bmn-8F-mt7"/>
-                            <constraint firstItem="2bQ-hi-vc6" firstAttribute="trailing" secondItem="SxS-98-dHe" secondAttribute="trailing" constant="100" id="ChE-tb-O2v"/>
+                            <constraint firstItem="2bQ-hi-vc6" firstAttribute="trailing" secondItem="SxS-98-dHe" secondAttribute="trailing" constant="50" id="ChE-tb-O2v"/>
                             <constraint firstItem="huH-L9-NBr" firstAttribute="leading" secondItem="2bQ-hi-vc6" secondAttribute="leading" id="IpV-d6-XSp"/>
                             <constraint firstItem="noX-S4-9f7" firstAttribute="top" secondItem="2bQ-hi-vc6" secondAttribute="top" constant="50" id="K3G-g5-5Y3"/>
                             <constraint firstItem="2bQ-hi-vc6" firstAttribute="bottom" secondItem="FLZ-L4-Xzk" secondAttribute="bottom" id="SIm-i4-RER"/>
                             <constraint firstItem="2bQ-hi-vc6" firstAttribute="trailing" secondItem="BT3-Vm-5fU" secondAttribute="trailing" constant="50" id="TqS-Iz-8kB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LzN-81-WOu" secondAttribute="trailing" id="U96-Dy-Tpc"/>
                             <constraint firstItem="2bQ-hi-vc6" firstAttribute="trailing" secondItem="zQJ-cK-ROL" secondAttribute="trailing" constant="50" id="Vqu-UD-I93"/>
                             <constraint firstItem="FLZ-L4-Xzk" firstAttribute="top" secondItem="huH-L9-NBr" secondAttribute="bottom" priority="750" id="WDG-3G-FuG"/>
-                            <constraint firstItem="zQJ-cK-ROL" firstAttribute="top" secondItem="DbJ-aF-pSY" secondAttribute="bottom" constant="40" id="Wov-OJ-l8x"/>
+                            <constraint firstItem="zQJ-cK-ROL" firstAttribute="top" secondItem="DbJ-aF-pSY" secondAttribute="bottom" constant="20" id="Wov-OJ-l8x"/>
                             <constraint firstItem="zQJ-cK-ROL" firstAttribute="leading" secondItem="2bQ-hi-vc6" secondAttribute="leading" constant="50" id="Z1m-KT-Qgo"/>
                             <constraint firstItem="DbJ-aF-pSY" firstAttribute="leading" secondItem="2bQ-hi-vc6" secondAttribute="leading" constant="50" id="Zr7-JM-J7H"/>
                             <constraint firstItem="dzn-XY-moQ" firstAttribute="trailing" secondItem="2bQ-hi-vc6" secondAttribute="trailing" id="ckC-HR-rHD"/>
-                            <constraint firstItem="SxS-98-dHe" firstAttribute="top" secondItem="BT3-Vm-5fU" secondAttribute="bottom" constant="50" id="epS-Nz-WcM"/>
+                            <constraint firstItem="SxS-98-dHe" firstAttribute="top" secondItem="BT3-Vm-5fU" secondAttribute="bottom" constant="30" id="epS-Nz-WcM"/>
+                            <constraint firstItem="LzN-81-WOu" firstAttribute="leading" secondItem="eSw-uR-hFh" secondAttribute="leadingMargin" id="foN-If-Ryy"/>
                             <constraint firstItem="FLZ-L4-Xzk" firstAttribute="trailing" secondItem="2bQ-hi-vc6" secondAttribute="trailing" id="fxd-Nt-fMx"/>
                             <constraint firstItem="DbJ-aF-pSY" firstAttribute="top" secondItem="noX-S4-9f7" secondAttribute="bottom" constant="15" id="gnv-aF-yb0"/>
                             <constraint firstItem="SxS-98-dHe" firstAttribute="leading" secondItem="2bQ-hi-vc6" secondAttribute="leading" constant="50" id="ljY-rq-8P1"/>
@@ -209,6 +220,7 @@
                         <outlet property="countryPicker" destination="dzn-XY-moQ" id="YhL-nE-jgM"/>
                         <outlet property="documentButton" destination="BT3-Vm-5fU" id="QvY-GX-tOq"/>
                         <outlet property="documentPicker" destination="FLZ-L4-Xzk" id="YyD-CK-iLz"/>
+                        <outlet property="loaderView" destination="LzN-81-WOu" id="49B-2h-VHO"/>
                         <outlet property="pickerToolbar" destination="huH-L9-NBr" id="4wQ-Iu-pPD"/>
                         <outlet property="pickerToolbarDoneButton" destination="b72-ms-Grf" id="Rpf-sR-hxc"/>
                     </connections>
@@ -391,7 +403,7 @@
                                 <rect key="frame" x="0.0" y="286" width="375" height="381"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="PjT-Jq-hqy">
-                                        <rect key="frame" x="50" y="40" width="175" height="45"/>
+                                        <rect key="frame" x="50" y="40" width="275" height="45"/>
                                         <color key="backgroundColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="hGo-br-joX"/>
@@ -413,7 +425,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="Aix-XW-4l0" firstAttribute="top" secondItem="PjT-Jq-hqy" secondAttribute="bottom" constant="10" id="Jrz-ln-Go8"/>
-                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="PjT-Jq-hqy" secondAttribute="trailing" constant="150" id="PcG-pR-c0f"/>
+                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="PjT-Jq-hqy" secondAttribute="trailing" constant="50" id="PcG-pR-c0f"/>
                                     <constraint firstItem="Aix-XW-4l0" firstAttribute="leading" secondItem="tvr-un-Vlb" secondAttribute="leading" constant="50" id="QA4-K1-4ix"/>
                                     <constraint firstItem="PjT-Jq-hqy" firstAttribute="leading" secondItem="tvr-un-Vlb" secondAttribute="leading" constant="50" id="WHV-06-vlv"/>
                                     <constraint firstItem="PjT-Jq-hqy" firstAttribute="top" secondItem="tvr-un-Vlb" secondAttribute="top" constant="40" id="px5-sH-nOu"/>
