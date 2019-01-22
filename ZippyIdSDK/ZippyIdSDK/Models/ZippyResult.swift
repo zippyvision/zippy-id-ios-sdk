@@ -43,7 +43,7 @@ public struct ZippyResult: Codable {
     public var customerData: ZippyCustomerData?
     public var finishedAt: String?
     public var state: ZippyResponseState?
-    public var processingErrors: [String: [String]]?
+    public var processingErrors: [String: String]?
     
     /*
      Can't use enum here because of
