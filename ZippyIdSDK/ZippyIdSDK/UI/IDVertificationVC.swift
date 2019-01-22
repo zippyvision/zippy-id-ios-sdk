@@ -54,17 +54,19 @@ class IDVertificationVC: UIViewController {
                 case .error(let err):
                     print(err)
                 case .value(let result):
-                    self.countries = result
-                    self.selectedCountry = result[0]
-                    self.selectedDocument = result[0].documentTypes[0]
-                    
-                    self.updatePickerValues()
-                    
-                    self.countryPicker.dataSource = self.countryDSD
-                    self.countryPicker.delegate = self.countryDSD
-                    
-                    self.documentPicker.dataSource = self.documentDSD
-                    self.documentPicker.delegate = self.documentDSD
+                    DispatchQueue.main.async {
+                        self.countries = result
+                        self.selectedCountry = result[0]
+                        self.selectedDocument = result[0].documentTypes[0]
+                        
+                        self.updatePickerValues()
+                        
+                        self.countryPicker.dataSource = self.countryDSD
+                        self.countryPicker.delegate = self.countryDSD
+                        
+                        self.documentPicker.dataSource = self.documentDSD
+                        self.documentPicker.delegate = self.documentDSD
+                    }
                 }
         }
     }
