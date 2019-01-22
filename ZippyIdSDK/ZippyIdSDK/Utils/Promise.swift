@@ -103,8 +103,9 @@ extension URLSession {
         let promise = Promise<Data>()
         
         let task = dataTask(with: request) { data, urlResponse, error in
-            guard let statusCode = (urlResponse as? HTTPURLResponse)?.statusCode else { return }
-            print("Status code:", statusCode)
+            if let statusCode = (urlResponse as? HTTPURLResponse)?.statusCode {
+                print("Status code:", statusCode)
+            }
             
             if let error = error {
                 promise.reject(with: error)
