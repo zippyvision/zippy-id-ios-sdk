@@ -1,4 +1,4 @@
-ZippyId SDK writtne in Swift.
+ZippyId SDK written in Swift.
 
 ## Requirements
 
