@@ -27,7 +27,6 @@ class WizardVC: UIViewController {
     @IBOutlet weak var sendingLabel: UILabel!
     @IBOutlet weak var helpLabel: UILabel! {
         didSet {
-            helpLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(getHelp(gesture:))))
             helpLabel.isUserInteractionEnabled = true
             formatHelpLabel()
         }
@@ -43,6 +42,8 @@ class WizardVC: UIViewController {
     @IBOutlet weak var faceViewHeight: NSLayoutConstraint!
     @IBOutlet weak var documentFrontViewHeight: NSLayoutConstraint!
     @IBOutlet weak var documentBackViewHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var exampleImageView: UIImageView!
     
     @IBAction func onButtonTap(_ sender: Any) {
         let bundle = Bundle(for: ZippyVC.self)
@@ -130,6 +131,8 @@ class WizardVC: UIViewController {
                     }
                 }
             }
+        
+        helpLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(getHelp(gesture:))))
     }
     
     private func send() {
@@ -190,9 +193,15 @@ class WizardVC: UIViewController {
     
     @objc func getHelp(gesture: UITapGestureRecognizer) {
         let helpRange = (helpLabel.text! as NSString).range(of: "Picture example")
-        guard gesture.didTapAttributedTextInLabel(label: helpLabel, inRange: helpRange) else { return }
-        
-        // do something
+        if gesture.didTapAttributedTextInLabel(label: helpLabel, inRange: helpRange) {
+            exampleImageView.isHidden = false
+            UIView.animate(withDuration: 3, delay:5, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
+                self.exampleImageView.alpha = 0
+                
+            }, completion: { finished in
+                self.exampleImageView.isHidden = true
+            })
+        }
     }
     
     private func formatHelpLabel() {
