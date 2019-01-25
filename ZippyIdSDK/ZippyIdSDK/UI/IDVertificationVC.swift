@@ -51,7 +51,7 @@ class IDVertificationVC: UIViewController {
     
     var countries: [Country] = [] {
         didSet {
-            countryDSD.countriesAPI = countries
+            countryDSD.countries = countries
             
             if let selectedCountry = countries.first {
                 self.selectedCountry = selectedCountry
@@ -75,7 +75,6 @@ class IDVertificationVC: UIViewController {
         didSet {
             documentButton?.setTitle(selectedDocument?.label, for: .normal)
             documentDSD.selectedDocument = selectedDocument
-            countryDSD.selectedDocument = selectedDocument
             
             countryPicker.reloadAllComponents()
             documentPicker.reloadAllComponents()
@@ -128,13 +127,14 @@ class IDVertificationVC: UIViewController {
     @IBAction func didTapDoneButton(_ sender: Any) {
         if !countryPicker.isHidden {
             selectedCountry = countryDSD.selectedCountry
-            selectedDocument = selectedCountry?.documentTypes.contains {($0.value == selectedDocument?.value)} ?? false ? selectedDocument : selectedCountry?.documentTypes[0]
+            selectedDocument = selectedCountry?.documentTypes[0]
+            documentPicker.selectRow(0, inComponent: 0, animated: true)
+            documentPicker.reloadAllComponents()
             hidePickers()
         }
         
         if !documentPicker.isHidden {
-            selectedDocument = documentDSD.selectedDocument            
-            selectedCountry = selectedCountry?.documentTypes.contains {($0.value == selectedDocument?.value)} ?? false ? selectedCountry : countries[0]
+            selectedDocument = documentDSD.selectedDocument
             hidePickers()
         }
     }
@@ -148,22 +148,21 @@ class IDVertificationVC: UIViewController {
 }
 
 class CountryDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
-    var countriesAPI: [Country] = []
+    var countries: [Country] = []
     var selectedCountry: Country?
-    var selectedDocument: DocumentType?
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return countriesAPI.filter {$0.documentTypes.contains {($0.value == selectedDocument?.value)}}.count
+        return countries.count
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return countriesAPI.filter {$0.documentTypes.contains {($0.value == selectedDocument?.value)}}[row].label
+        return countries[row].label
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedCountry = countriesAPI.filter {$0.documentTypes.contains {($0.value == selectedDocument?.value)}}[row]
+        selectedCountry = countries[row]
     }
 }
 
