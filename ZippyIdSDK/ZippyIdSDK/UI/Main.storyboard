@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.3.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -418,12 +418,15 @@
                                                     <action selector="onButtonTap:" destination="bJo-cN-z9p" eventType="touchUpInside" id="yvH-6B-k1u"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Need help with picture? Check out Picture example" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Xv-wW-Iq4">
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Need help with picture? Check out Picture example" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Xv-wW-Iq4">
                                                 <rect key="frame" x="50" y="95" width="275" height="31.5"/>
                                                 <gestureRecognizers/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="WoS-4o-lhF" appends="YES" id="KPk-om-kVW"/>
+                                                </connections>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -443,17 +446,33 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <gestureRecognizers/>
                             </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p7f-4M-JOJ">
+                                <rect key="frame" x="176.5" y="597" width="22" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zLi-RG-u2Q">
+                                <rect key="frame" x="50" y="635" width="275" height="2"/>
+                                <color key="progressTintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="trackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="pii-4Z-HMQ" firstAttribute="leading" secondItem="iOk-pn-J6Z" secondAttribute="leading" id="0P5-ji-jpE"/>
                             <constraint firstItem="pii-4Z-HMQ" firstAttribute="top" secondItem="EgK-fZ-yRg" secondAttribute="top" id="1oU-9q-11w"/>
+                            <constraint firstItem="iOk-pn-J6Z" firstAttribute="bottom" secondItem="zLi-RG-u2Q" secondAttribute="bottom" constant="30" id="IQR-OT-MOZ"/>
                             <constraint firstItem="UUh-gD-ajd" firstAttribute="leading" secondItem="iOk-pn-J6Z" secondAttribute="leading" id="IYn-ed-TzK"/>
                             <constraint firstItem="pii-4Z-HMQ" firstAttribute="trailing" secondItem="iOk-pn-J6Z" secondAttribute="trailing" id="WEG-1K-Kdg"/>
+                            <constraint firstAttribute="trailing" secondItem="zLi-RG-u2Q" secondAttribute="trailing" constant="50" id="b6W-wi-8j3"/>
+                            <constraint firstItem="zLi-RG-u2Q" firstAttribute="top" secondItem="p7f-4M-JOJ" secondAttribute="bottom" constant="20" id="cZx-9t-GDL"/>
                             <constraint firstItem="UUh-gD-ajd" firstAttribute="top" secondItem="EgK-fZ-yRg" secondAttribute="top" id="fiT-QW-mM7"/>
                             <constraint firstItem="pii-4Z-HMQ" firstAttribute="bottom" secondItem="iOk-pn-J6Z" secondAttribute="bottom" id="ic3-jn-mJ7"/>
+                            <constraint firstItem="zLi-RG-u2Q" firstAttribute="leading" secondItem="EgK-fZ-yRg" secondAttribute="leading" constant="50" id="idx-Ab-CUW"/>
                             <constraint firstItem="UUh-gD-ajd" firstAttribute="bottom" secondItem="iOk-pn-J6Z" secondAttribute="bottom" id="pX2-p7-IjK"/>
                             <constraint firstAttribute="trailing" secondItem="UUh-gD-ajd" secondAttribute="trailing" id="tF1-VO-tb5"/>
+                            <constraint firstItem="p7f-4M-JOJ" firstAttribute="centerX" secondItem="EgK-fZ-yRg" secondAttribute="centerX" id="wcY-aG-CTu"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="iOk-pn-J6Z"/>
                     </view>
@@ -472,10 +491,17 @@
                         <outlet property="faceViewHeight" destination="fLt-2M-gQV" id="6em-2d-Lzg"/>
                         <outlet property="helpLabel" destination="1Xv-wW-Iq4" id="FfS-Qo-iVu"/>
                         <outlet property="preparingLabel" destination="Mcc-rN-gC2" id="AKp-oy-5Xa"/>
+                        <outlet property="progressPercentageLabel" destination="p7f-4M-JOJ" id="jc3-wp-onk"/>
+                        <outlet property="progressView" destination="zLi-RG-u2Q" id="4tc-ah-2OU"/>
                         <outlet property="sendingLabel" destination="YJ2-M8-IjH" id="Da6-fk-Fop"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NEo-pZ-MvX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="WoS-4o-lhF">
+                    <connections>
+                        <action selector="getHelp:" destination="bJo-cN-z9p" id="EDp-uo-T1J"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-535.20000000000005" y="234.33283358320841"/>
         </scene>

@@ -12,7 +12,7 @@ class ApiClient {
     let secret: String
     let key: String
     let baseUrl: String
-    let session: URLSession = URLSession(configuration: .ephemeral)
+    var session: URLSession = URLSession(configuration: .ephemeral)
     let decoder = JSONDecoder()
     
     init(secret: String, key: String, baseUrl: String) {

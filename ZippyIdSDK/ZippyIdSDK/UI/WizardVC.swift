@@ -15,7 +15,7 @@ public enum ZippyImageMode {
     case documentBack
 }
 
-class WizardVC: UIViewController {
+class WizardVC: UIViewController, URLSessionTaskDelegate {
     @IBOutlet weak var preparingLabel: UILabel!
     @IBOutlet weak var faceImageLabel: UILabel!
     @IBOutlet weak var faceImageDescLabel: UILabel!
@@ -44,6 +44,13 @@ class WizardVC: UIViewController {
     @IBOutlet weak var documentBackViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var exampleImageView: UIImageView!
+    
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var progressPercentageLabel: UILabel! {
+        didSet {
+            progressPercentageLabel.text = "0%"
+        }
+    }
     
     @IBAction func onButtonTap(_ sender: Any) {
         let bundle = Bundle(for: ZippyVC.self)
@@ -109,6 +116,7 @@ class WizardVC: UIViewController {
         
         assert(delegate != nil)
         
+        apiClient.session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue.main)
         configuration = delegate.getSessionConfiguration()
         
         if isPassport {
@@ -130,12 +138,19 @@ class WizardVC: UIViewController {
                         self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
                     }
                 }
-            }
-        
-        helpLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(getHelp(gesture:))))
+        }
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        let uploadProgress: Float = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
+        progressView.progress = uploadProgress
+        let progressPercent = Int(uploadProgress*100)
+        progressPercentageLabel.text = "\(progressPercent)%"
     }
     
     private func send() {
+        progressView.isHidden = false
+        progressPercentageLabel.isHidden = false
         apiClient.sendImages(token: token!, documentType: configuration.documentType, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
             .observe { (result) in
                 switch result {
@@ -188,20 +203,18 @@ class WizardVC: UIViewController {
                         })
                     }
                 }
-            }
+        }
     }
     
-    @objc func getHelp(gesture: UITapGestureRecognizer) {
-        let helpRange = (helpLabel.text! as NSString).range(of: "Picture example")
-        if gesture.didTapAttributedTextInLabel(label: helpLabel, inRange: helpRange) {
-            exampleImageView.isHidden = false
-            UIView.animate(withDuration: 3, delay:5, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
-                self.exampleImageView.alpha = 0
-                
-            }, completion: { finished in
-                self.exampleImageView.isHidden = true
-            })
-        }
+    
+    @IBAction func getHelp(_ sender: Any) {
+        exampleImageView.isHidden = false
+        UIView.animate(withDuration: 3, delay:5, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
+            self.exampleImageView.alpha = 0
+            
+        }, completion: { finished in
+            self.exampleImageView.isHidden = true
+        })
     }
     
     private func formatHelpLabel() {
@@ -265,55 +278,4 @@ extension WizardVC: TakePhotoVCDelegate {
         
         return newImage
     }
-}
-
-// https://samwize.com/2016/03/04/how-to-create-multiple-tappable-links-in-a-uilabel/
-extension UITapGestureRecognizer {
-    func didTapAttributedTextInLabel(label: UILabel, inRange targetRange: NSRange) -> Bool {
-        // Create instances of NSLayoutManager, NSTextContainer and NSTextStorage
-        let layoutManager = NSLayoutManager()
-        let textContainer = NSTextContainer(size: CGSize.zero)
-        let textStorage = NSTextStorage(attributedString: label.attributedText!)
-        
-        // Configure layoutManager and textStorage
-        layoutManager.addTextContainer(textContainer)
-        textStorage.addLayoutManager(layoutManager)
-        
-        // Configure textContainer
-        textContainer.lineFragmentPadding = 0.0
-        textContainer.lineBreakMode = label.lineBreakMode
-        textContainer.maximumNumberOfLines = label.numberOfLines
-        let labelSize = label.bounds.size
-        textContainer.size = labelSize
-        
-        // Find the tapped character location and compare it to the specified range
-        let locationOfTouchInLabel = self.location(in: label)
-        let textBoundingBox = layoutManager.usedRect(for: textContainer)
-        let textContainerOffset = CGPoint(x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x,
-                                          y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y)
-        let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x,
-                                                     y: locationOfTouchInLabel.y - textContainerOffset.y)
-        
-        let step = 10
-        return ([-1, 0, 1] * [-1, 0, 1])
-            .lazy
-            .map { (deltas) -> CGPoint in
-                return CGPoint(x: locationOfTouchInTextContainer.x + CGFloat(deltas.0 * step), y: locationOfTouchInTextContainer.y + CGFloat(deltas.1 * step))
-            }
-            .map({ (locationOfTouch) -> Bool in
-                let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouch, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-                
-                print("index of char:", indexOfCharacter)
-                return NSLocationInRange(indexOfCharacter, targetRange)
-            })
-            .contains(true)
-    }
-}
-
-// Descartes product
-// https://stackoverflow.com/a/43331492/683763
-func *<T1: Sequence, T2: Sequence>(lhs: T1, rhs: T2) -> AnySequence<(T1.Iterator.Element, T2.Iterator.Element)> {
-    return AnySequence (
-        lhs.lazy.flatMap { x in rhs.lazy.map { y in (x, y) }}
-    )
 }
