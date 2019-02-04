@@ -36,6 +36,14 @@ extension CameraController {
             self.captureSession = AVCaptureSession()
         }
         
+        func setFocus(_ camera: AVCaptureDevice) throws {
+            if (camera.isFocusModeSupported(.continuousAutoFocus)) {
+                try camera.lockForConfiguration()
+                camera.focusMode = .continuousAutoFocus
+                camera.unlockForConfiguration()
+            }
+        }
+        
         func configureCaptureDevices() throws {
             let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .unspecified)
             let cameras = session.devices
@@ -44,14 +52,12 @@ extension CameraController {
             for camera in cameras {
                 if camera.position == .front {
                     self.frontCamera = camera
+                    try setFocus(camera)
                 }
                 
                 if camera.position == .back {
                     self.rearCamera = camera
-                    
-                    try camera.lockForConfiguration()
-                    camera.focusMode = .autoFocus
-                    camera.unlockForConfiguration()
+                    try setFocus(camera)
                 }
             }
         }
