@@ -16,8 +16,9 @@ protocol TakePhotoVCDelegate: class {
 class TakePhotoVC: UIViewController {
     @IBOutlet weak var cameraView: UIView!
     let cameraController = CameraController()
-    @IBOutlet weak var frameImageView: UIImageView!
-    @IBOutlet weak var faceFrameImageView: UIImageView!
+    @IBOutlet weak var faceFrameStackView: UIStackView!
+    @IBOutlet weak var documentFrontFrameImageView: UIImageView!
+    @IBOutlet weak var documentBackFrameImageView: UIImageView!
     weak var delegate: TakePhotoVCDelegate! = nil
     var mode: ZippyImageMode = .none
     
@@ -64,14 +65,17 @@ class TakePhotoVC: UIViewController {
         switch mode {
         case .face:
             switchCameras()
-            frameImageView.isHidden = false
-            faceFrameImageView.isHidden = true
+            faceFrameStackView.isHidden = false
+            documentFrontFrameImageView.isHidden = true
+            documentBackFrameImageView.isHidden = true
         case .documentFront:
-            frameImageView.isHidden = true
-            faceFrameImageView.isHidden = false
+            faceFrameStackView.isHidden = true
+            documentFrontFrameImageView.isHidden = false
+            documentBackFrameImageView.isHidden = true
         case .documentBack:
-            frameImageView.isHidden = false
-            faceFrameImageView.isHidden = true
+            faceFrameStackView.isHidden = true
+            documentFrontFrameImageView.isHidden = true
+            documentBackFrameImageView.isHidden = false
         case .none:
             print("error")
         }
