@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol NextPhotoStep: class {
+    func onAccept(vc: PhotoConfirmationVC, image: UIImage)
+    func onError(vc: TakePhotoVC, error: ZippyError)
+}
+
 public enum ZippyImageMode {
     case none
     case face
@@ -63,8 +68,9 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
             
             currentImage = .face
-            photoVC.delegate = self
             photoVC.mode = currentImage
+            photoVC.delegate = self.delegate
+            photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
         } else if documentFront == nil {
             button.isEnabled = true
@@ -72,8 +78,9 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
             
             currentImage = .documentFront
-            photoVC.delegate = self
             photoVC.mode = currentImage
+            photoVC.delegate = self.delegate
+            photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
         } else if documentBack == nil && isPassport != true {
             button.isEnabled = true
@@ -81,8 +88,9 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
             
             currentImage = .documentBack
-            photoVC.delegate = self
             photoVC.mode = currentImage
+            photoVC.delegate = self.delegate
+            photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
         } else {
             button.isEnabled = false
@@ -92,6 +100,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     }
     
     public weak var delegate: ZippyVCDelegate!
+    weak var nextPhotoStepDelegate: NextPhotoStep! = nil
     
     private let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
     private let decoder = JSONDecoder()
@@ -232,24 +241,22 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     }
 }
 
-extension WizardVC: TakePhotoVCDelegate {
-    func onSuccess(vc: TakePhotoVC, image: UIImage) {
-        let resized = resizeImage(image: image, newWidth: 1000)
-        
+extension WizardVC: NextPhotoStep {
+    func onAccept(vc: PhotoConfirmationVC, image: UIImage) {
         switch currentImage {
         case .face:
-            face = resized
+            face = image
             self.faceImageLabel.text! += " OK"
             self.button.setTitle("Uzņemt dokumenta priekšas attēlu", for: .normal)
             adjustViews(documentFrontViewHeight, faceViewHeight, documentFrontImageDescLabel, faceImageDescLabel)
         case .documentFront:
-            documentFront = resized
+            documentFront = image
             self.documentFrontImageLabel.text! += " OK"
             self.button.setTitle(isPassport ? "Sūtīt" : "Uzņemt dokumenta aizmugures attēlu", for: .normal)
             adjustViews(documentBackViewHeight, documentFrontViewHeight, documentBackImageDescLabel, documentFrontImageDescLabel)
         case .documentBack:
             if !isPassport {
-                documentBack = resized
+                documentBack = image
                 self.documentBackImageLabel.text! += " OK"
                 self.button.setTitle("Sūtīt", for: .normal)
                 adjustViews(nil, documentBackViewHeight, nil, documentBackImageDescLabel)
@@ -265,17 +272,5 @@ extension WizardVC: TakePhotoVCDelegate {
         currentImage = .none
         
         delegate.onCompletedWithError(error: error)
-    }
-    
-    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage? {
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
-        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
     }
 }

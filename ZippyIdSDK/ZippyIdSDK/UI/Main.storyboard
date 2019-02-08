@@ -21,7 +21,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RJY-o4-h3f">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BY3-ji-JPU" userLabel="face frame stack view">
+                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BY3-ji-JPU" userLabel="face frame stack view">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="opaque_background" translatesAutoresizingMaskIntoConstraints="NO" id="wOE-nP-p0D" userLabel="opaque background top">
@@ -52,10 +52,10 @@
                                             <constraint firstItem="Szm-iQ-3HX" firstAttribute="leading" secondItem="BY3-ji-JPU" secondAttribute="leading" id="tbJ-QX-YaY"/>
                                         </constraints>
                                     </stackView>
-                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="document_back" translatesAutoresizingMaskIntoConstraints="NO" id="oh7-jM-Yob" userLabel="Document front frame">
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="document_front" translatesAutoresizingMaskIntoConstraints="NO" id="oh7-jM-Yob" userLabel="Document front frame">
                                         <rect key="frame" x="25" y="25" width="325" height="522"/>
                                     </imageView>
-                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="document_front" translatesAutoresizingMaskIntoConstraints="NO" id="jjc-5E-OJA" userLabel="Document back frame">
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="document_back" translatesAutoresizingMaskIntoConstraints="NO" id="jjc-5E-OJA" userLabel="Document back frame">
                                         <rect key="frame" x="25" y="25" width="325" height="527"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4GJ-c0-aFS">
@@ -108,6 +108,79 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z4V-0h-wOu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="316" y="234.33283358320841"/>
+        </scene>
+        <!--Photo ConfirmationVC-->
+        <scene sceneID="jWq-gv-z2u">
+            <objects>
+                <viewController restorationIdentifier="PhotoConfirmationVC" storyboardIdentifier="PhotoConfirmationVC" id="yFZ-3u-v5p" customClass="PhotoConfirmationVC" customModule="ZippyIdSDK" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Bzd-W9-wLZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6JU-og-ZKQ">
+                                <rect key="frame" x="25" y="120" width="325" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="s9t-jn-mUk"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure your license details are clear to read, with no blur or glare" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7L-9C-WJ6">
+                                <rect key="frame" x="30" y="370" width="315" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5YN-o7-fcz">
+                                <rect key="frame" x="25" y="502" width="325" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Tmr-8o-YwV"/>
+                                </constraints>
+                                <color key="tintColor" red="0.97227032229999999" green="0.97920274169999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="My license is readable"/>
+                                <connections>
+                                    <action selector="confirmPhoto:" destination="yFZ-3u-v5p" eventType="touchUpInside" id="bDg-Kc-msw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azJ-Iw-HLO">
+                                <rect key="frame" x="25" y="567" width="325" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.98407187843488308" blue="0.96886215772121598" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="oDS-vr-kOq"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Take a new picture"/>
+                                <connections>
+                                    <action selector="takeNewPhoto:" destination="yFZ-3u-v5p" eventType="touchUpInside" id="EAi-W3-eid"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RHv-TS-P2Q" firstAttribute="trailing" secondItem="z7L-9C-WJ6" secondAttribute="trailing" constant="30" id="6O3-g3-Xqw"/>
+                            <constraint firstItem="RHv-TS-P2Q" firstAttribute="trailing" secondItem="azJ-Iw-HLO" secondAttribute="trailing" constant="25" id="83a-I3-XTh"/>
+                            <constraint firstItem="6JU-og-ZKQ" firstAttribute="top" secondItem="RHv-TS-P2Q" secondAttribute="top" constant="100" id="9hP-9X-QsE"/>
+                            <constraint firstItem="z7L-9C-WJ6" firstAttribute="leading" secondItem="RHv-TS-P2Q" secondAttribute="leading" constant="30" id="BDh-sN-hdJ"/>
+                            <constraint firstItem="RHv-TS-P2Q" firstAttribute="trailing" secondItem="5YN-o7-fcz" secondAttribute="trailing" constant="25" id="EUe-zF-7bp"/>
+                            <constraint firstItem="z7L-9C-WJ6" firstAttribute="top" secondItem="6JU-og-ZKQ" secondAttribute="bottom" constant="50" id="Jv3-HA-pTJ"/>
+                            <constraint firstItem="azJ-Iw-HLO" firstAttribute="top" secondItem="5YN-o7-fcz" secondAttribute="bottom" constant="15" id="NbV-4M-l0g"/>
+                            <constraint firstItem="RHv-TS-P2Q" firstAttribute="bottom" secondItem="azJ-Iw-HLO" secondAttribute="bottom" constant="50" id="Nf5-PE-gTg"/>
+                            <constraint firstItem="6JU-og-ZKQ" firstAttribute="leading" secondItem="RHv-TS-P2Q" secondAttribute="leading" constant="25" id="Yvz-ef-JKX"/>
+                            <constraint firstItem="RHv-TS-P2Q" firstAttribute="trailing" secondItem="6JU-og-ZKQ" secondAttribute="trailing" constant="25" id="dbg-un-fdR"/>
+                            <constraint firstItem="5YN-o7-fcz" firstAttribute="leading" secondItem="RHv-TS-P2Q" secondAttribute="leading" constant="25" id="wPU-17-toc"/>
+                            <constraint firstItem="azJ-Iw-HLO" firstAttribute="leading" secondItem="RHv-TS-P2Q" secondAttribute="leading" constant="25" id="y4k-gL-mMq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RHv-TS-P2Q"/>
+                    </view>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="z7L-9C-WJ6" id="YjH-OT-JGX"/>
+                        <outlet property="isReadableButton" destination="5YN-o7-fcz" id="3uC-ns-FpL"/>
+                        <outlet property="photoImageView" destination="6JU-og-ZKQ" id="8Kc-QC-MyN"/>
+                        <outlet property="takePhotoButton" destination="azJ-Iw-HLO" id="b5a-uA-t7C"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cau-ag-1p7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2760.8000000000002" y="282.90854572713647"/>
         </scene>
         <!--VertificationVC-->
         <scene sceneID="zEl-yY-CVD">

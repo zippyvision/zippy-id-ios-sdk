@@ -8,53 +8,49 @@
 
 import Foundation
 
-protocol TakePhotoVCDelegate: class {
-    func onSuccess(vc: TakePhotoVC, image: UIImage)
-    func onError(vc: TakePhotoVC, error: ZippyError)
-}
-
 class TakePhotoVC: UIViewController {
     @IBOutlet weak var cameraView: UIView!
     let cameraController = CameraController()
     @IBOutlet weak var faceFrameStackView: UIStackView!
     @IBOutlet weak var documentFrontFrameImageView: UIImageView!
     @IBOutlet weak var documentBackFrameImageView: UIImageView!
-    weak var delegate: TakePhotoVCDelegate! = nil
+    public weak var delegate: ZippyVCDelegate!
+    weak var nextPhotoStepDelegate: NextPhotoStep! = nil
     var mode: ZippyImageMode = .none
     
     @IBAction func onClickTap(_ sender: Any) {
         cameraController.captureImage {[weak self] (image, error) in
             guard let self = self else { return }
             
-            self.dismiss(animated: true, completion: {
-                if let error = error {
-                    self.delegate.onError(vc: self, error: error)
-                    return
-                }
-                
-                self.delegate.onSuccess(vc: self, image: image!)
-                
-            })
+            let bundle = Bundle(for: ZippyVC.self)
+            
+            let photoConfirmationVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
+            
+            photoConfirmationVC.image = image!
+            photoConfirmationVC.delegate = self.delegate
+            photoConfirmationVC.nextPhotoStepDelegate = self.nextPhotoStepDelegate
+            photoConfirmationVC.mode = self.mode
+            self.present(photoConfirmationVC, animated: true, completion: nil)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if delegate == nil {
+        if nextPhotoStepDelegate == nil {
             self.dismiss(animated: true, completion: nil)
         }
         
         cameraController.prepare { (error) in
             if let error = error {
-                self.delegate.onError(vc: self, error: error)
+                self.nextPhotoStepDelegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
                 return
             }
             
             do {
                 try self.cameraController.displayPreview(on: self.cameraView)
             } catch let error {
-                self.delegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
+                self.nextPhotoStepDelegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
                 return
             }
             self.adjustCameraMode()
