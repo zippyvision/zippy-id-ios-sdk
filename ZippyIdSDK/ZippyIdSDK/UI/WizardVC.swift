@@ -30,12 +30,6 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     @IBOutlet weak var documentBackImageLabel: UILabel!
     @IBOutlet weak var documentBackImageDescLabel: UILabel!
     @IBOutlet weak var sendingLabel: UILabel!
-    @IBOutlet weak var helpLabel: UILabel! {
-        didSet {
-            helpLabel.isUserInteractionEnabled = true
-            formatHelpLabel()
-        }
-    }
     
     @IBOutlet weak var button: UIButton! {
         didSet {
@@ -47,9 +41,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     @IBOutlet weak var faceViewHeight: NSLayoutConstraint!
     @IBOutlet weak var documentFrontViewHeight: NSLayoutConstraint!
     @IBOutlet weak var documentBackViewHeight: NSLayoutConstraint!
-    
-    @IBOutlet weak var exampleImageView: UIImageView!
-    
+        
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var progressPercentageLabel: UILabel! {
         didSet {
@@ -69,6 +61,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .face
             photoVC.mode = currentImage
+            photoVC.documentType = selectedDocument
             photoVC.delegate = self.delegate
             photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
@@ -79,6 +72,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .documentFront
             photoVC.mode = currentImage
+            photoVC.documentType = selectedDocument
             photoVC.delegate = self.delegate
             photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
@@ -89,6 +83,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .documentBack
             photoVC.mode = currentImage
+            photoVC.documentType = selectedDocument
             photoVC.delegate = self.delegate
             photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
@@ -113,8 +108,8 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private var documentFront: UIImage?
     private var documentBack: UIImage?
     
-    var selectedDocument: DocumentType?
-    lazy var isPassport = selectedDocument?.value == "passport" ? true : false
+    lazy var selectedDocument: DocumentType = DocumentType(value: "ID card", label: "id_card")
+    lazy var isPassport = selectedDocument.value == "passport" ? true : false
     
     var apiClient: ApiClient!
     
@@ -213,24 +208,6 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     }
                 }
         }
-    }
-    
-    
-    @IBAction func getHelp(_ sender: Any) {
-        exampleImageView.isHidden = false
-        UIView.animate(withDuration: 3, delay:5, options:UIView.AnimationOptions.transitionFlipFromTop, animations: {
-            self.exampleImageView.alpha = 0
-            
-        }, completion: { finished in
-            self.exampleImageView.isHidden = true
-        })
-    }
-    
-    private func formatHelpLabel() {
-        let attributedString = NSMutableAttributedString(string: helpLabel.text ?? "", attributes: nil)
-        let helpRange = (helpLabel.text! as NSString).range(of: "Picture example")
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.orange, range: helpRange)
-        helpLabel.attributedText = attributedString
     }
     
     func adjustViews(_ enlargeConstraint: NSLayoutConstraint?, _ decreaseConstraint: NSLayoutConstraint?, _ showLabel: UILabel?, _ hideLabel: UILabel?) {

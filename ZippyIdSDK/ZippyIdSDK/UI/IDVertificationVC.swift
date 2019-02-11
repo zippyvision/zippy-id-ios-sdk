@@ -120,7 +120,7 @@ class IDVertificationVC: UIViewController {
         let bundle = Bundle(for: WizardVC.self)
         self.wizardVC = (UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC)
         self.wizardVC.delegate = self.delegate
-        wizardVC.selectedDocument = selectedDocument
+        wizardVC.selectedDocument = selectedDocument!
         self.present(self.wizardVC, animated: false, completion: nil)
     }
     

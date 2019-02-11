@@ -10,13 +10,17 @@ import Foundation
 
 class TakePhotoVC: UIViewController {
     @IBOutlet weak var cameraView: UIView!
-    let cameraController = CameraController()
     @IBOutlet weak var faceFrameStackView: UIStackView!
-    @IBOutlet weak var documentFrontFrameImageView: UIImageView!
-    @IBOutlet weak var documentBackFrameImageView: UIImageView!
+    @IBOutlet weak var documentFrontFrameStackView: UIStackView!
+    @IBOutlet weak var documentBackFrameStackView: UIStackView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     public weak var delegate: ZippyVCDelegate!
     weak var nextPhotoStepDelegate: NextPhotoStep! = nil
+    let cameraController = CameraController()
     var mode: ZippyImageMode = .none
+    var documentType: DocumentType = DocumentType(value: "ID card", label: "id_card")
     
     @IBAction func onClickTap(_ sender: Any) {
         cameraController.captureImage {[weak self] (image, error) in
@@ -62,16 +66,26 @@ class TakePhotoVC: UIViewController {
         case .face:
             switchCameras()
             faceFrameStackView.isHidden = false
-            documentFrontFrameImageView.isHidden = true
-            documentBackFrameImageView.isHidden = true
+            documentFrontFrameStackView.isHidden = true
+            documentBackFrameStackView.isHidden = true
+            titleLabel.text = ""
+            descriptionLabel.text = ""
         case .documentFront:
             faceFrameStackView.isHidden = true
-            documentFrontFrameImageView.isHidden = false
-            documentBackFrameImageView.isHidden = true
+            documentFrontFrameStackView.isHidden = false
+            documentBackFrameStackView.isHidden = true
+            titleLabel.text = documentType.label
+            if (documentType.value == "passport") {
+                descriptionLabel.text = "Position your passport in the frame"
+            } else {
+                descriptionLabel.text = "Position the front of your \(documentType.label) in the frame"
+            }
         case .documentBack:
             faceFrameStackView.isHidden = true
-            documentFrontFrameImageView.isHidden = true
-            documentBackFrameImageView.isHidden = false
+            documentFrontFrameStackView.isHidden = true
+            documentBackFrameStackView.isHidden = false
+            titleLabel.text = documentType.label
+            descriptionLabel.text = "Position the back of your \(documentType.label) in the frame"
         case .none:
             print("error")
         }

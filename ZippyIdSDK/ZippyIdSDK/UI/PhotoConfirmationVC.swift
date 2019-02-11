@@ -23,13 +23,6 @@ class PhotoConfirmationVC: UIViewController {
         
         adjustForMode()
         
-        if ((mode == .documentFront) || mode == .documentBack ) {
-            image = image?.rotateImage(radians: -.pi/2)
-            let ratio = image!.size.width / image!.size.height
-            let newHeight = photoImageView.frame.width / ratio
-            photoImageView.frame.size = CGSize(width: photoImageView.frame.width, height: newHeight)
-        }
-        
         image = image?.resizeImage(newWidth: 1000)
         self.photoImageView.image = image
     }
@@ -66,24 +59,6 @@ extension UIImage {
         let newHeight = self.size.height * scale
         UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
         self.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
-    }
-    
-    func rotateImage(radians: Float) -> UIImage? {
-        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
-        newSize.width = floor(newSize.width)
-        newSize.height = floor(newSize.height)
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, true, self.scale)
-        let context = UIGraphicsGetCurrentContext()!
-        
-        context.translateBy(x: newSize.width/2, y: newSize.height/2)
-        context.rotate(by: CGFloat(radians))
-        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
