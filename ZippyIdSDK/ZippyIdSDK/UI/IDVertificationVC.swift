@@ -11,6 +11,7 @@ import Foundation
 class IDVertificationVC: UIViewController {
     var wizardVC: WizardVC!
     public weak var delegate: ZippyVCDelegate!
+    public weak var zippyCallback: ZippyCallback?
     @IBOutlet weak var loaderView: UIActivityIndicatorView!
     @IBOutlet weak var countryButton: UIButton! {
         didSet {
@@ -121,6 +122,7 @@ class IDVertificationVC: UIViewController {
         self.wizardVC = (UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC)
         self.wizardVC.delegate = self.delegate
         wizardVC.selectedDocument = selectedDocument!
+        self.wizardVC.zippyCallback = self.zippyCallback
         self.present(self.wizardVC, animated: false, completion: nil)
     }
     

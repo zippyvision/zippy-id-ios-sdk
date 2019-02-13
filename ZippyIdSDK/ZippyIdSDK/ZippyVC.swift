@@ -8,6 +8,12 @@
 
 import Foundation
 
+public protocol ZippyCallback: class {
+    func onSubmit()
+    func onTextExtracted()
+    func onFinished()
+}
+
 public protocol ZippyVCDelegate: class {
     func getSessionConfiguration() -> ZippySessionConfig
     func onCompletedSuccessfully(result: ZippyResult)
@@ -16,6 +22,7 @@ public protocol ZippyVCDelegate: class {
 
 public class ZippyVC: UIViewController {
     public weak var delegate: ZippyVCDelegate!
+    public weak var zippyCallback: ZippyCallback?
     var wizardVC: WizardVC!
     var idVertificationVC: IDVertificationVC!
     let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
@@ -35,6 +42,7 @@ public class ZippyVC: UIViewController {
             let bundle = Bundle(for: ZippyVC.self)
             self.idVertificationVC = (UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "IDVertificationVC") as! IDVertificationVC)
             self.idVertificationVC.delegate = self.delegate
+            self.idVertificationVC.zippyCallback = self.zippyCallback
             self.present(self.idVertificationVC, animated: false, completion: nil)
         }
     }

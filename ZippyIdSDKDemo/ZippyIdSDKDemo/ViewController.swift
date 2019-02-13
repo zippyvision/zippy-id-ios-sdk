@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBAction func onButtonTap(_ sender: Any) {
         let vc = ZippyVC()
         vc.delegate = self
+        vc.zippyCallback = self
         
         self.present(vc, animated: true, completion: nil)
     }
@@ -33,3 +34,16 @@ extension ViewController: ZippyVCDelegate {
         return ZippySessionConfig(customerId: "\(Date().timeIntervalSince1970)", documentType: .driversLicence)
     }
 }
+
+extension ViewController: ZippyCallback {
+    func onSubmit() {
+        // fired, tad kad ir uploadotas visas bildes
+    }
+    func onTextExtracted() {
+        // fired, tad kad API end-pointā parādās rezultāts ( iedošu endpoint )
+    }
+    func onFinished() {
+        // fired, tad kad visi checki veikti (API end point jau it kā ir, bet uztaisīšu mazliet sakarīgāku)
+    }
+}
+

@@ -95,6 +95,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     }
     
     public weak var delegate: ZippyVCDelegate!
+    public weak var zippyCallback: ZippyCallback?
     weak var nextPhotoStepDelegate: NextPhotoStep! = nil
     
     private let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
@@ -165,7 +166,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     
                     DispatchQueue.main.async {
                         self.sendingLabel.text! += " OK"
-        
+                        self.zippyCallback?.onSubmit()
                         self.pollJobStatus()
                     }
                 }
@@ -194,6 +195,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     })
                 case .value(let result):
                     if result.state == .finished {
+                        self.zippyCallback?.onFinished()
                         self.dismiss(animated: true, completion: nil)
                         self.delegate.onCompletedSuccessfully(result: result)
                     } else if result.state == .failed {
