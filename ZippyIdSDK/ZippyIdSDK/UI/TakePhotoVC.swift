@@ -34,6 +34,7 @@ class TakePhotoVC: UIViewController {
             photoConfirmationVC.delegate = self.delegate
             photoConfirmationVC.nextPhotoStepDelegate = self.nextPhotoStepDelegate
             photoConfirmationVC.mode = self.mode
+            photoConfirmationVC.documentType = self.documentType
             self.present(photoConfirmationVC, animated: true, completion: nil)
         }
     }

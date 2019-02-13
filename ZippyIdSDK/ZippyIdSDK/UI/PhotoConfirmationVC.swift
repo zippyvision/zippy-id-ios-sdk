@@ -16,6 +16,7 @@ class PhotoConfirmationVC: UIViewController {
     public weak var delegate: ZippyVCDelegate!
     weak var nextPhotoStepDelegate: NextPhotoStep! = nil
     var mode: ZippyImageMode = .none
+    var documentType: DocumentType = DocumentType(value: "ID card", label: "id_card")
     var image: UIImage!
     
     override func viewDidLoad() {
@@ -28,13 +29,15 @@ class PhotoConfirmationVC: UIViewController {
     }
     
     func adjustForMode() {
+        let documentTypeLabel: String = (documentType.value == "id_card") ? documentType.label : documentType.label.lowercased()
+        
         switch mode {
         case .face:
             descriptionLabel.text = "Make sure your face is recognizable, with no blur or glare"
             isReadableButton.setTitle("My face is recognizable", for: .normal)
         case .documentFront, .documentBack:
-            descriptionLabel.text = "Make sure your license details are clear to read, with no blur or glare"
-            isReadableButton.setTitle("My license ir readable", for: .normal)
+            descriptionLabel.text = "Make sure your \(documentTypeLabel) details are clear to read, with no blur or glare"
+            isReadableButton.setTitle("My \(documentTypeLabel) ir readable", for: .normal)
         case .none:
             print("error")
         }
