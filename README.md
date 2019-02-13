@@ -54,6 +54,27 @@ public protocol ZippyVCDelegate: class {
 }
 ```
 
+### Results
+
+To receive the user's results, create a `ZippyVCDelegate` extension using methods `onCompletedSuccessfully(result: ZippyResult)` and `onCompletedWithError(error: ZippyError)`
+
+```Swift
+extension ViewController: ZippyVCDelegate {
+    func onCompletedSuccessfully(result: ZippyResult) {
+        print(result)
+    }
+
+    func onCompletedWithError(error: ZippyError) {
+        print(error.localizedDescription)
+        ...
+    }
+}
+```
+
+If the session was successful `onCompletedSuccessfully` is called which contains the sessions result in `result`
+
+If there was an error `onCompletedWithError` is called which contains the error message in `error`
+
 ### Optional callback
 
 If you want you can use 3 additional functions by adding a `ZippyCallback` extension
