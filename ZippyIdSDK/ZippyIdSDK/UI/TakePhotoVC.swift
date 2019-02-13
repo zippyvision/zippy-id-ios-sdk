@@ -21,22 +21,10 @@ class TakePhotoVC: UIViewController {
     let cameraController = CameraController()
     var mode: ZippyImageMode = .none
     var documentType: DocumentType = DocumentType(value: "ID card", label: "id_card")
+    var timer = Timer()
     
     @IBAction func onClickTap(_ sender: Any) {
-        cameraController.captureImage {[weak self] (image, error) in
-            guard let self = self else { return }
-            
-            let bundle = Bundle(for: ZippyVC.self)
-            
-            let photoConfirmationVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
-            
-            photoConfirmationVC.image = image!
-            photoConfirmationVC.delegate = self.delegate
-            photoConfirmationVC.nextPhotoStepDelegate = self.nextPhotoStepDelegate
-            photoConfirmationVC.mode = self.mode
-            photoConfirmationVC.documentType = self.documentType
-            self.present(photoConfirmationVC, animated: true, completion: nil)
-        }
+        capturePhoto()
     }
     
     override func viewDidLoad() {
@@ -59,6 +47,26 @@ class TakePhotoVC: UIViewController {
                 return
             }
             self.adjustCameraMode()
+            if (self.mode == .face) {
+                self.scheduledTimerWithTimeInterval()
+            }
+        }
+    }
+    
+    func capturePhoto() {
+        cameraController.captureImage {[weak self] (image, error) in
+            guard let self = self else { return }
+            
+            let bundle = Bundle(for: ZippyVC.self)
+            
+            let photoConfirmationVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
+            
+            photoConfirmationVC.image = image!
+            photoConfirmationVC.delegate = self.delegate
+            photoConfirmationVC.nextPhotoStepDelegate = self.nextPhotoStepDelegate
+            photoConfirmationVC.mode = self.mode
+            photoConfirmationVC.documentType = self.documentType
+            self.present(photoConfirmationVC, animated: true, completion: nil)
         }
     }
     
@@ -89,6 +97,17 @@ class TakePhotoVC: UIViewController {
             descriptionLabel.text = "Position the back of your \(documentType.label) in the frame"
         case .none:
             print("error")
+        }
+    }
+    
+    func scheduledTimerWithTimeInterval() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.searchFace), userInfo: nil, repeats: true)
+    }
+    
+    @objc func searchFace() {
+        if (self.cameraController.faceDetected == true) {
+            print("face detected in TakePhotoVC")
+            self.capturePhoto()
         }
     }
     
