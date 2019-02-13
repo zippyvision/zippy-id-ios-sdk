@@ -48,6 +48,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             progressPercentageLabel.text = "0%"
         }
     }
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction func onButtonTap(_ sender: Any) {
         let bundle = Bundle(for: ZippyVC.self)
@@ -167,6 +168,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     DispatchQueue.main.async {
                         self.sendingLabel.text! += " OK"
                         self.zippyCallback?.onSubmit()
+                        self.activityIndicator.isHidden = false
                         self.pollJobStatus()
                     }
                 }
