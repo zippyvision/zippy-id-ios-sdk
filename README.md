@@ -26,6 +26,12 @@ ZippyIdSDK.initialize(key: "<key>", secret: "<secret>")
 
 You can access the `key` and `secret` variables by going to [ZippyID admin panel](https://demo.zippyid.com/#/api_integrations) and creating a new API integration
 
+You can also pass an integer value for  `customer_uid` adding it's argument in the initialization as follows
+
+```Swift
+ZippyIdSDK.initialize(key: "<key>", secret: "<secret>", customerUid: "<customer_uid>")
+```
+
 ### Usage
 
 To start using, just instantiate and present a new `ZippyVC` instance
@@ -46,4 +52,28 @@ public protocol ZippyVCDelegate: class {
     func onCompletedSuccessfully(result: ZippyResult)    // Called when the ZippyID has finished (either with success, or with error)
     func onCompletedWithError(error: ZippyError)         // Called when an error (server problems, code errors) has occured during process
 }
+```
+
+### Optional callback
+
+If you want you can use 3 additional functions by adding a `ZippyCallback` extension
+
+```Swift
+extension ViewController: ZippyCallback {
+    func onSubmit() {
+        // called when all images are sent
+    }
+    func onTextExtracted() {
+        // called when API receives a result
+    }
+    func onFinished() {
+        // called when all is finished
+    }
+}
+```
+
+and passing it to `ZippyVC()` as 
+
+```
+vc.zippyCallback = self
 ```
