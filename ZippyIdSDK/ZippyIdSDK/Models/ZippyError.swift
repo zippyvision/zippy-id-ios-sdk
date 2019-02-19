@@ -12,9 +12,12 @@ public enum ZippyError: Error {
     case processingTimedOut
     case processingFailed
     
+    case imageSendingFailed
+    
     case cameraCaptureSessionAlreadyRunning
     case cameraCaptureSessionIsMissing
     case cameraInputsAreInvalid
+    case cameraInvalidOutput
     case cameraInvalidOperation
     case cameraNoCamerasAvailable
     case cameraWrappedError(Error)

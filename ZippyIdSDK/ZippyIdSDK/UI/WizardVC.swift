@@ -62,7 +62,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .face
             photoVC.mode = currentImage
-            photoVC.documentType = selectedDocument
+            photoVC.document = selectedDocument
             photoVC.delegate = self.delegate
             photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
@@ -73,7 +73,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .documentFront
             photoVC.mode = currentImage
-            photoVC.documentType = selectedDocument
+            photoVC.document = selectedDocument
             photoVC.delegate = self.delegate
             photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
@@ -84,7 +84,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .documentBack
             photoVC.mode = currentImage
-            photoVC.documentType = selectedDocument
+            photoVC.document = selectedDocument
             photoVC.delegate = self.delegate
             photoVC.nextPhotoStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
@@ -109,9 +109,9 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private var face: UIImage?
     private var documentFront: UIImage?
     private var documentBack: UIImage?
-    
-    lazy var selectedDocument: DocumentType = DocumentType(value: "ID card", label: "id_card")
-    lazy var isPassport = selectedDocument.value == "passport" ? true : false
+
+    var selectedDocument: Document!
+    var isPassport = false
     
     var apiClient: ApiClient!
     
@@ -124,6 +124,8 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
         
         apiClient.session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue.main)
         configuration = delegate.getSessionConfiguration()
+        
+        isPassport = (selectedDocument == .passport)
         
         if isPassport {
             documentBackView.removeFromSuperview()
@@ -157,11 +159,12 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private func send() {
         progressView.isHidden = false
         progressPercentageLabel.isHidden = false
-        apiClient.sendImages(token: token!, documentType: configuration.documentType, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
+        apiClient.sendImages(token: token!, document: selectedDocument, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
             .observe { (result) in
                 switch result {
                 case .error:
-                    ()
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate.onCompletedWithError(error: ZippyError.imageSendingFailed)
                 case .value(let id):
                     print("Submited with ID = \(id)")
                     
@@ -180,6 +183,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
         print("Trying to get status: \(count)")
         
         if self.count == 10 {
+            self.activityIndicator.isHidden = true
             self.dismiss(animated: true, completion: nil)
             self.delegate.onCompletedWithError(error: .processingTimedOut)
             return
@@ -201,6 +205,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                         self.dismiss(animated: true, completion: nil)
                         self.delegate.onCompletedSuccessfully(result: result)
                     } else if result.state == .failed {
+                        self.activityIndicator.isHidden = true
                         self.dismiss(animated: true, completion: nil)
                         self.delegate.onCompletedWithError(error: ZippyError.processingFailed)
                     } else {

@@ -37,13 +37,12 @@ extension ViewController: ZippyVCDelegate {
 
 extension ViewController: ZippyCallback {
     func onSubmit() {
-        // fired, tad kad ir uploadotas visas bildes
+        // called when all images are sent
     }
     func onTextExtracted() {
-        // fired, tad kad API end-pointā parādās rezultāts ( iedošu endpoint )
+        // called when API receives a result
     }
     func onFinished() {
-        // fired, tad kad visi checki veikti (API end point jau it kā ir, bet uztaisīšu mazliet sakarīgāku)
+        // called when all is finished
     }
 }
-

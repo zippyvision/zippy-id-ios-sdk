@@ -94,22 +94,17 @@ extension CameraController {
             guard let captureSession = self.captureSession else { throw ZippyError.cameraCaptureSessionIsMissing }
             
             self.photoOutput = AVCapturePhotoOutput()
-            
-            
-            self.output = AVCaptureVideoDataOutput()
-            
-            output?.alwaysDiscardsLateVideoFrames = true
-            let outputQueue = DispatchQueue(label: "outputQueue")
-            output?.setSampleBufferDelegate(self, queue: outputQueue)
-            
-            if (output != nil) {
-                if (captureSession.canAddOutput(output!) == true) {
-                    captureSession.addOutput(output!)
+            if let output = self.output {
+                output.alwaysDiscardsLateVideoFrames = true
+                let outputQueue = DispatchQueue(label: "outputQueue")
+                output.setSampleBufferDelegate(self, queue: outputQueue)
+                if (captureSession.canAddOutput(output)) {
+                    captureSession.addOutput(output)
                 } else {
-                    print("ERROR: Output not viable")
+                    throw ZippyError.cameraInvalidOutput
                 }
+
             }
-            
             
             if #available(iOS 11.0, *) {
                 self.photoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
@@ -217,19 +212,14 @@ extension CameraController {
 
 extension CameraController: AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        if (pixelBuffer != nil) {
-            let cameraImage = CIImage(cvPixelBuffer: pixelBuffer!)
-            
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            let cameraImage = CIImage(cvPixelBuffer: pixelBuffer)
             let accuracy = [ CIDetectorAccuracy : CIDetectorAccuracyHigh ]
             let faceDetector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: accuracy)
-            let faces = faceDetector?.features(in: cameraImage)
-            
-            for face in faces as! [CIFaceFeature] {
-                if (face.leftEyeClosed == false && face.rightEyeClosed == false) {
-                    faceDetected = true
-                    print("face detected")
-                }
+            if let faces = faceDetector?.features(in: cameraImage) as? [CIFaceFeature] {
+                faceDetected = faces.filter {
+                    !$0.leftEyeClosed && !$0.rightEyeClosed
+                }.count > 0
             }
         }
     }

@@ -20,7 +20,7 @@ class TakePhotoVC: UIViewController {
     weak var nextPhotoStepDelegate: NextPhotoStep! = nil
     let cameraController = CameraController()
     var mode: ZippyImageMode = .none
-    var documentType: DocumentType = DocumentType(value: "ID card", label: "id_card")
+    var document: Document!
     var timer = Timer()
     
     @IBAction func onClickTap(_ sender: Any) {
@@ -65,7 +65,7 @@ class TakePhotoVC: UIViewController {
             photoConfirmationVC.delegate = self.delegate
             photoConfirmationVC.nextPhotoStepDelegate = self.nextPhotoStepDelegate
             photoConfirmationVC.mode = self.mode
-            photoConfirmationVC.documentType = self.documentType
+            photoConfirmationVC.document = self.document
             self.present(photoConfirmationVC, animated: true, completion: nil)
         }
     }
@@ -83,18 +83,18 @@ class TakePhotoVC: UIViewController {
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = false
             documentBackFrameStackView.isHidden = true
-            titleLabel.text = documentType.label
-            if (documentType.value == "passport") {
+            titleLabel.text = document.rawValue
+            if (document == .passport) {
                 descriptionLabel.text = "Position your passport in the frame"
             } else {
-                descriptionLabel.text = "Position the front of your \(documentType.label) in the frame"
+                descriptionLabel.text = "Position the front of your \(document.rawValue) in the frame"
             }
         case .documentBack:
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = true
             documentBackFrameStackView.isHidden = false
-            titleLabel.text = documentType.label
-            descriptionLabel.text = "Position the back of your \(documentType.label) in the frame"
+            titleLabel.text = document.rawValue
+            descriptionLabel.text = "Position the back of your \(document.rawValue) in the frame"
         case .none:
             print("error")
         }
@@ -105,8 +105,7 @@ class TakePhotoVC: UIViewController {
     }
     
     @objc func searchFace() {
-        if (self.cameraController.faceDetected == true) {
-            print("face detected in TakePhotoVC")
+        if (self.cameraController.faceDetected) {
             self.capturePhoto()
         }
     }

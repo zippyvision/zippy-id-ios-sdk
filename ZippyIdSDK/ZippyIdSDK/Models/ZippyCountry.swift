@@ -8,17 +8,39 @@
 
 import Foundation
 
-public struct DocumentType: Decodable {
-    let value: String
-    let label: String
+public enum Document: String, Codable {
+    case idCard = "ID card"
+    case passport = "Passport"
+    case driversLicense = "Driver's license"
+    case unknown = ""
+    
+    private enum CodingKeys: String, CodingKey {
+        case value = "value"
+        case label = "label"
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container: KeyedDecodingContainer = try! decoder.container(keyedBy: CodingKeys.self)
+        let typeValue = String(try container.decode(String.self, forKey: .value))
+        switch typeValue {
+        case "id_card":
+            self = .idCard
+        case "passport":
+            self = .passport
+        case "drivers_license":
+            self = .driversLicense
+        default:
+            self = .unknown
+        }
+    }
 }
 
 struct Country: Decodable {
     let value: String
     let label: String
-    let documentTypes: [DocumentType]
+    let documents: [Document]
     
     private enum CodingKeys: String, CodingKey {
-        case value, label, documentTypes = "document_types"
+        case value, label, documents = "document_types"
     }
 }

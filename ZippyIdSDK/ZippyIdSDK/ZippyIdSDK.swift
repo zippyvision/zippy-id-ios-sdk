@@ -14,9 +14,9 @@ public class ZippyIdSDK {
     static var isInitialized = false
     static private(set) var key: String!
     static private(set) var secret: String!
-    static private(set) var customerUid: Int = -1
+    static private(set) var customerUid: Int?
     
-    public static func initialize(key: String, secret: String, customerUid: Int = -1) {
+    public static func initialize(key: String, secret: String, customerUid: Int?) {
         self.key = key
         self.secret = secret
         self.customerUid = customerUid

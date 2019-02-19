@@ -16,7 +16,7 @@ class PhotoConfirmationVC: UIViewController {
     public weak var delegate: ZippyVCDelegate!
     weak var nextPhotoStepDelegate: NextPhotoStep! = nil
     var mode: ZippyImageMode = .none
-    var documentType: DocumentType = DocumentType(value: "ID card", label: "id_card")
+    var document: Document!
     var image: UIImage!
     
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ class PhotoConfirmationVC: UIViewController {
     }
     
     func adjustForMode() {
-        let documentTypeLabel: String = (documentType.value == "id_card") ? documentType.label : documentType.label.lowercased()
+        let documentTypeLabel: String = ((document == .idCard) ? document.rawValue : document.rawValue.lowercased())
         
         switch mode {
         case .face:

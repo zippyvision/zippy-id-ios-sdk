@@ -37,7 +37,7 @@ class ApiClient {
             })
     }
     
-    func sendImages(token: String, documentType: ZippyDocumentType, selfie: UIImage, documentFront: UIImage, documentBack: UIImage?, customerUid: String) -> Future<String> {
+    func sendImages(token: String, document: Document, selfie: UIImage, documentFront: UIImage, documentBack: UIImage?, customerUid: String) -> Future<String> {
         let url: URL = URL(string: baseUrl)!
             .appendingPathComponent("v1")
             .appendingPathComponent("verifications")
@@ -46,7 +46,7 @@ class ApiClient {
         let postBody: [String: String] = [
             "token": token,
             "document_country": "lv",
-            "document_type": documentType.rawValue,
+            "document_type": document.rawValue,
             "image_data[selfie]": "data:image/png;base64," + convertToFormParam(image: selfie),
             "image_data[idFront]": "data:image/png;base64," + convertToFormParam(image: documentFront),
             "image_data[idBack]": ((documentBack != nil) ? "data:image/png;base64," + convertToFormParam(image: documentBack!) : "no image"),
