@@ -31,7 +31,7 @@ extension ViewController: ZippyVCDelegate {
     }
     
     func getSessionConfiguration() -> ZippySessionConfig {
-        return ZippySessionConfig(customerId: "\(Date().timeIntervalSince1970)", documentType: .driversLicence)
+        return ZippySessionConfig(customerId: "\(Date().timeIntervalSince1970)", documentType: .driversLicense)
     }
 }
 
