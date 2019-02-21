@@ -194,13 +194,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6JU-og-ZKQ">
-                                <rect key="frame" x="25" y="120" width="325" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="s9t-jn-mUk"/>
-                                </constraints>
+                                <rect key="frame" x="25" y="70" width="325" height="352"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure your license details are clear to read, with no blur or glare" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7L-9C-WJ6">
-                                <rect key="frame" x="30" y="370" width="315" height="41"/>
+                                <rect key="frame" x="30" y="437" width="315" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="hA9-Q8-NwM"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -234,10 +234,11 @@
                         <constraints>
                             <constraint firstItem="RHv-TS-P2Q" firstAttribute="trailing" secondItem="z7L-9C-WJ6" secondAttribute="trailing" constant="30" id="6O3-g3-Xqw"/>
                             <constraint firstItem="RHv-TS-P2Q" firstAttribute="trailing" secondItem="azJ-Iw-HLO" secondAttribute="trailing" constant="25" id="83a-I3-XTh"/>
-                            <constraint firstItem="6JU-og-ZKQ" firstAttribute="top" secondItem="RHv-TS-P2Q" secondAttribute="top" constant="100" id="9hP-9X-QsE"/>
                             <constraint firstItem="z7L-9C-WJ6" firstAttribute="leading" secondItem="RHv-TS-P2Q" secondAttribute="leading" constant="30" id="BDh-sN-hdJ"/>
                             <constraint firstItem="RHv-TS-P2Q" firstAttribute="trailing" secondItem="5YN-o7-fcz" secondAttribute="trailing" constant="25" id="EUe-zF-7bp"/>
-                            <constraint firstItem="z7L-9C-WJ6" firstAttribute="top" secondItem="6JU-og-ZKQ" secondAttribute="bottom" constant="50" id="Jv3-HA-pTJ"/>
+                            <constraint firstItem="6JU-og-ZKQ" firstAttribute="top" secondItem="RHv-TS-P2Q" secondAttribute="top" constant="50" id="H1n-KR-Qub"/>
+                            <constraint firstItem="z7L-9C-WJ6" firstAttribute="top" secondItem="6JU-og-ZKQ" secondAttribute="bottom" constant="15" id="Jv3-HA-pTJ"/>
+                            <constraint firstItem="5YN-o7-fcz" firstAttribute="top" secondItem="z7L-9C-WJ6" secondAttribute="bottom" constant="15" id="Mc0-lg-gcL"/>
                             <constraint firstItem="azJ-Iw-HLO" firstAttribute="top" secondItem="5YN-o7-fcz" secondAttribute="bottom" constant="15" id="NbV-4M-l0g"/>
                             <constraint firstItem="RHv-TS-P2Q" firstAttribute="bottom" secondItem="azJ-Iw-HLO" secondAttribute="bottom" constant="50" id="Nf5-PE-gTg"/>
                             <constraint firstItem="6JU-og-ZKQ" firstAttribute="leading" secondItem="RHv-TS-P2Q" secondAttribute="leading" constant="25" id="Yvz-ef-JKX"/>
