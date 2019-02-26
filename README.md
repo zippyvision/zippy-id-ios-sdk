@@ -9,7 +9,7 @@ ZippyId SDK written in Swift.
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'ZippyIdSDK', :git => 'git@github.com:mak-it/zippyid-sdk-ios.git'
+pod 'ZippyIdSDK', :git => 'git@github.com:zippyvision/zippy-id-ios-sdk.git'
 ```
 
 ## Usage
