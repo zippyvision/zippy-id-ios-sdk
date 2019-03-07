@@ -55,7 +55,7 @@ class TakePhotoVC: UIViewController {
     
     func capturePhoto() {
         cameraController.captureImage {[weak self] (image, error) in
-            guard let self = self else { return }
+            guard let self = self, image != nil else { return }
             
             let bundle = Bundle(for: ZippyVC.self)
             
@@ -101,11 +101,11 @@ class TakePhotoVC: UIViewController {
     }
     
     func scheduledTimerWithTimeInterval() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.searchFace), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.searchObject), userInfo: nil, repeats: true)
     }
     
-    @objc func searchFace() {
-        if (self.cameraController.faceDetected) {
+    @objc func searchObject() {
+        if (self.cameraController.objectDetected) {
             self.capturePhoto()
         }
     }
