@@ -46,10 +46,10 @@ class TakePhotoVC: UIViewController {
                 self.nextPhotoStepDelegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
                 return
             }
+            
             self.adjustCameraMode()
-            if (self.mode == .face) {
-                self.scheduledTimerWithTimeInterval()
-            }
+            self.cameraController.mode = self.mode
+            self.scheduledTimerWithTimeInterval()
         }
     }
     
@@ -107,6 +107,7 @@ class TakePhotoVC: UIViewController {
     @objc func searchObject() {
         if (self.cameraController.objectDetected) {
             self.capturePhoto()
+            timer.invalidate()
         }
     }
     

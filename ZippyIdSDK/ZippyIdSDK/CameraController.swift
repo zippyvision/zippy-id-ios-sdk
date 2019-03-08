@@ -30,6 +30,7 @@ class CameraController: NSObject {
     var flashMode = AVCaptureDevice.FlashMode.off
     var photoCaptureCompletionBlock: ((UIImage?, ZippyError?) -> Void)?
     
+    var mode: ZippyImageMode = .none
     var objectDetected: Bool = false
 }
 
@@ -105,7 +106,6 @@ extension CameraController {
                 } else {
                     throw ZippyError.cameraInvalidOutput
                 }
-
             }
             
             if #available(iOS 11.0, *) {
@@ -215,16 +215,15 @@ extension CameraController {
 extension CameraController: AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-
             let cameraImage = CIImage(cvPixelBuffer: pixelBuffer)
             let accuracy = [ CIDetectorAccuracy : CIDetectorAccuracyHigh ]
             
-            if (self.currentCameraPosition == CameraPosition.front) {
+            if (mode == ZippyImageMode.face) {
                 let faceDetector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: accuracy)
                 if let faces = faceDetector?.features(in: cameraImage) as? [CIFaceFeature] {
                     objectDetected = faces.filter{!$0.leftEyeClosed && !$0.rightEyeClosed}.count > 0
                 }
-            } else if (self.currentCameraPosition == CameraPosition.rear) {
+            } else if (mode == ZippyImageMode.documentFront || mode == ZippyImageMode.documentBack) {
                 let rectangleDetector = CIDetector(ofType: CIDetectorTypeRectangle, context: nil, options: accuracy)
                 if let rectangles = rectangleDetector?.features(in: cameraImage) as? [CIRectangleFeature] {
                     objectDetected = rectangles.count > 0

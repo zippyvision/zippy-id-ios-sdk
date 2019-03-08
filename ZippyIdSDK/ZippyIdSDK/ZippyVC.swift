@@ -26,7 +26,8 @@ public class ZippyVC: UIViewController {
     var wizardVC: WizardVC!
     var idVertificationVC: IDVertificationVC!
     let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
-    
+    var customerUid: Int?
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         
