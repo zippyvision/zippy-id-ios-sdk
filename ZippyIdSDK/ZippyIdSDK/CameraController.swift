@@ -20,6 +20,8 @@ class CameraController: NSObject {
     
     var photoOutput: AVCapturePhotoOutput?
     
+    var output: AVCaptureVideoDataOutput?
+    
     var rearCamera: AVCaptureDevice?
     var rearCameraInput: AVCaptureDeviceInput?
     
@@ -27,6 +29,9 @@ class CameraController: NSObject {
     
     var flashMode = AVCaptureDevice.FlashMode.off
     var photoCaptureCompletionBlock: ((UIImage?, ZippyError?) -> Void)?
+    
+    var mode: ZippyImageMode = .none
+    var objectDetected: Bool = false
 }
 
 @available(iOS 10.0, *)
@@ -90,6 +95,19 @@ extension CameraController {
             guard let captureSession = self.captureSession else { throw ZippyError.cameraCaptureSessionIsMissing }
             
             self.photoOutput = AVCapturePhotoOutput()
+            self.output = AVCaptureVideoDataOutput()
+            
+            if let output = self.output {
+                output.alwaysDiscardsLateVideoFrames = true
+                let outputQueue = DispatchQueue(label: "outputQueue")
+                output.setSampleBufferDelegate(self, queue: outputQueue)
+                if (captureSession.canAddOutput(output)) {
+                    captureSession.addOutput(output)
+                } else {
+                    throw ZippyError.cameraInvalidOutput
+                }
+            }
+            
             if #available(iOS 11.0, *) {
                 self.photoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
             } else {
@@ -194,7 +212,29 @@ extension CameraController {
     }
 }
 
-extension CameraController: AVCapturePhotoCaptureDelegate {
+extension CameraController: AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
+    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            let cameraImage = CIImage(cvPixelBuffer: pixelBuffer)
+            let accuracy = [ CIDetectorAccuracy : CIDetectorAccuracyHigh ]
+            
+            switch mode {
+            case .face:
+                let faceDetector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: accuracy)
+                if let faces = faceDetector?.features(in: cameraImage) as? [CIFaceFeature] {
+                    objectDetected = faces.filter{!$0.leftEyeClosed && !$0.rightEyeClosed}.count > 0
+                }
+            case .documentFront, .documentBack:
+                let rectangleDetector = CIDetector(ofType: CIDetectorTypeRectangle, context: nil, options: accuracy)
+                if let rectangles = rectangleDetector?.features(in: cameraImage) as? [CIRectangleFeature] {
+                    objectDetected = rectangles.count > 0
+                }
+            case .none:
+                return
+            }
+        }
+    }
+    
     public func photoOutput(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?, previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
                             resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Swift.Error?) {
         if let error = error {

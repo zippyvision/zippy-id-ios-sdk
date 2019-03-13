@@ -11,6 +11,7 @@ import Foundation
 class IDVertificationVC: UIViewController {
     var wizardVC: WizardVC!
     public weak var delegate: ZippyVCDelegate!
+    public weak var zippyCallback: ZippyCallback?
     @IBOutlet weak var loaderView: UIActivityIndicatorView!
     @IBOutlet weak var countryButton: UIButton! {
         didSet {
@@ -56,7 +57,7 @@ class IDVertificationVC: UIViewController {
             if let selectedCountry = countries.first {
                 self.selectedCountry = selectedCountry
             }
-            if let selectedDocument = countries.first?.documentTypes.first {
+            if let selectedDocument = countries.first?.documents.first {
                 self.selectedDocument = selectedDocument
             }
         }
@@ -71,9 +72,9 @@ class IDVertificationVC: UIViewController {
             documentPicker.reloadAllComponents()
         }
     }
-    var selectedDocument: DocumentType? {
+    var selectedDocument: Document? {
         didSet {
-            documentButton?.setTitle(selectedDocument?.label, for: .normal)
+            documentButton?.setTitle(selectedDocument?.rawValue, for: .normal)
             documentDSD.selectedDocument = selectedDocument
             
             countryPicker.reloadAllComponents()
@@ -121,13 +122,14 @@ class IDVertificationVC: UIViewController {
         self.wizardVC = (UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC)
         self.wizardVC.delegate = self.delegate
         wizardVC.selectedDocument = selectedDocument!
+        self.wizardVC.zippyCallback = self.zippyCallback
         self.present(self.wizardVC, animated: false, completion: nil)
     }
     
     @IBAction func didTapDoneButton(_ sender: Any) {
         if !countryPicker.isHidden {
             selectedCountry = countryDSD.selectedCountry
-            selectedDocument = selectedCountry?.documentTypes[0]
+            selectedDocument = selectedCountry?.documents[0]
             documentPicker.selectRow(0, inComponent: 0, animated: true)
             documentPicker.reloadAllComponents()
             hidePickers()
@@ -168,21 +170,21 @@ class CountryDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDat
 
 class DocumentDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
     var selectedCountry: Country?
-    var selectedDocument: DocumentType?
+    var selectedDocument: Document?
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return selectedCountry?.documentTypes.count ?? 0
+        return selectedCountry?.documents.count ?? 0
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return selectedCountry?.documentTypes[row].label
+        return selectedCountry?.documents[row].rawValue
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedDocument = selectedCountry?.documentTypes[row]
+        selectedDocument = selectedCountry?.documents[row]
     }
 }

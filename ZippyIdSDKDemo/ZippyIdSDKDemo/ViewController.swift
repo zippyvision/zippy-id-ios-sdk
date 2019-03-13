@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBAction func onButtonTap(_ sender: Any) {
         let vc = ZippyVC()
         vc.delegate = self
+        vc.zippyCallback = self
         
         self.present(vc, animated: true, completion: nil)
     }
@@ -30,6 +31,18 @@ extension ViewController: ZippyVCDelegate {
     }
     
     func getSessionConfiguration() -> ZippySessionConfig {
-        return ZippySessionConfig(customerId: "\(Date().timeIntervalSince1970)", documentType: .driversLicence)
+        return ZippySessionConfig(customerId: "\(Date().timeIntervalSince1970)", documentType: .driversLicense)
+    }
+}
+
+extension ViewController: ZippyCallback {
+    func onSubmit() {
+        // called when all images are sent
+    }
+    func onTextExtracted() {
+        // called when API receives a result
+    }
+    func onFinished() {
+        // called when all is finished
     }
 }

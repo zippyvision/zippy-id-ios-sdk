@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E92FB8322232750A0007BB27 /* PhotoConfirmationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92FB831223275090007BB27 /* PhotoConfirmationVC.swift */; };
 		E93F93C921F0E75200320CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E93F93C821F0E75100320CF8 /* Assets.xcassets */; };
 		E9F6342321EF3F8700F86856 /* ZippyCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6342221EF3F8700F86856 /* ZippyCountry.swift */; };
 		E9F6342521EF5C3600F86856 /* IDVertificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E92FB831223275090007BB27 /* PhotoConfirmationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoConfirmationVC.swift; sourceTree = "<group>"; };
 		E93F93C821F0E75100320CF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E9F6342221EF3F8700F86856 /* ZippyCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyCountry.swift; sourceTree = "<group>"; };
 		E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDVertificationVC.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				FD598FB821E5E8A600DFE4FE /* WizardVC.swift */,
 				FD598FBA21E5E8E700DFE4FE /* TakePhotoVC.swift */,
 				E9F6342421EF5C3600F86856 /* IDVertificationVC.swift */,
+				E92FB831223275090007BB27 /* PhotoConfirmationVC.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				E9F6342321EF3F8700F86856 /* ZippyCountry.swift in Sources */,
 				FD598FB921E5E8A600DFE4FE /* WizardVC.swift in Sources */,
 				FD81311D21E7D11900A30324 /* ZippyCustomerData.swift in Sources */,
+				E92FB8322232750A0007BB27 /* PhotoConfirmationVC.swift in Sources */,
 				FD41408021DC775F008543DB /* ZippyError.swift in Sources */,
 				E9F6342521EF5C3600F86856 /* IDVertificationVC.swift in Sources */,
 				FD81312D21E7DF1200A30324 /* Promise.swift in Sources */,

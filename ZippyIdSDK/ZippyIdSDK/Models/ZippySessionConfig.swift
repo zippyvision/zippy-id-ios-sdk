@@ -8,17 +8,11 @@
 
 import Foundation
 
-public enum ZippyDocumentType: String {
-    case passport = "passport"
-    case idCard = "id_card"
-    case driversLicence = "drivers_licence"
-}
-
 public struct ZippySessionConfig {
     public var customerId: String
-    public var documentType: ZippyDocumentType
+    public var documentType: Document
     
-    public init(customerId: String, documentType: ZippyDocumentType) {
+    public init(customerId: String, documentType: Document) {
         self.customerId = customerId
         self.documentType = documentType
     }
