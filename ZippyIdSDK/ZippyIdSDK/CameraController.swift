@@ -218,16 +218,19 @@ extension CameraController: AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOut
             let cameraImage = CIImage(cvPixelBuffer: pixelBuffer)
             let accuracy = [ CIDetectorAccuracy : CIDetectorAccuracyHigh ]
             
-            if (mode == ZippyImageMode.face) {
+            switch mode {
+            case .face:
                 let faceDetector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: accuracy)
                 if let faces = faceDetector?.features(in: cameraImage) as? [CIFaceFeature] {
                     objectDetected = faces.filter{!$0.leftEyeClosed && !$0.rightEyeClosed}.count > 0
                 }
-            } else if (mode == ZippyImageMode.documentFront || mode == ZippyImageMode.documentBack) {
+            case .documentFront, .documentBack:
                 let rectangleDetector = CIDetector(ofType: CIDetectorTypeRectangle, context: nil, options: accuracy)
                 if let rectangles = rectangleDetector?.features(in: cameraImage) as? [CIRectangleFeature] {
                     objectDetected = rectangles.count > 0
                 }
+            case .none:
+                return
             }
         }
     }
