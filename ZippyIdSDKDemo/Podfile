@@ -1,4 +1,4 @@
 target 'ZippyIdSDKDemo' do
   use_frameworks!
-  pod 'ZippyIdSDK', :path => '..'
+  pod 'ZippyIdSDK', :git => 'git@github.com:zippyvision/zippy-id-ios-sdk.git'
 end
