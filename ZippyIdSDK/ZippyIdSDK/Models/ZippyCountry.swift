@@ -9,9 +9,9 @@
 import Foundation
 
 public enum Document: String, Codable {
-    case idCard = "ID card"
-    case passport = "Passport"
-    case driversLicense = "Driver's license"
+    case idCard = "id_card"
+    case passport = "passport"
+    case driversLicense = "drivers_licence"
     case unknown = ""
     
     private enum CodingKeys: String, CodingKey {
@@ -22,16 +22,7 @@ public enum Document: String, Codable {
     public init(from decoder: Decoder) throws {
         let container: KeyedDecodingContainer = try! decoder.container(keyedBy: CodingKeys.self)
         let typeValue = String(try container.decode(String.self, forKey: .value))
-        switch typeValue {
-        case "id_card":
-            self = .idCard
-        case "passport":
-            self = .passport
-        case "drivers_license":
-            self = .driversLicense
-        default:
-            self = .unknown
-        }
+        self = Document(rawValue: typeValue) ?? .unknown
     }
 }
 

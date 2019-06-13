@@ -74,7 +74,7 @@ class IDVertificationVC: UIViewController {
     }
     var selectedDocument: Document? {
         didSet {
-            documentButton?.setTitle(selectedDocument?.rawValue, for: .normal)
+            documentButton?.setTitle(selectedDocument?.translation, for: .normal)
             documentDSD.selectedDocument = selectedDocument
             
             countryPicker.reloadAllComponents()
@@ -85,7 +85,7 @@ class IDVertificationVC: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let apiClient = ApiClient(secret: ZippyIdSDK.secret, key: ZippyIdSDK.key, baseUrl: ZippyIdSDK.host)
+        let apiClient = ApiClient(apiKey: ZippyIdSDK.apiKey, baseUrl: ZippyIdSDK.host)
         
         apiClient
             .getCountries()
@@ -181,7 +181,7 @@ class DocumentDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return selectedCountry?.documents[row].rawValue
+        return selectedCountry?.documents[row].translation
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

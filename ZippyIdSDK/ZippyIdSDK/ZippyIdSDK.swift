@@ -12,12 +12,10 @@ public class ZippyIdSDK {
     static let host = "https://app.zippyid.com/api/"
     
     static var isInitialized = false
-    static private(set) var key: String!
-    static private(set) var secret: String!
+    static private(set) var apiKey: String!
     
-    public static func initialize(key: String, secret: String) {
-        self.key = key
-        self.secret = secret
+    public static func initialize(apiKey: String) {
+        self.apiKey = apiKey
         isInitialized = true
     }
 }

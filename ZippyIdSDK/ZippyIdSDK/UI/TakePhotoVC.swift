@@ -83,18 +83,18 @@ class TakePhotoVC: UIViewController {
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = false
             documentBackFrameStackView.isHidden = true
-            titleLabel.text = document.rawValue
+            titleLabel.text = document!.translation
             if (document == .passport) {
                 descriptionLabel.text = "Position your passport in the frame"
             } else {
-                descriptionLabel.text = "Position the front of your \(document.rawValue) in the frame"
+                descriptionLabel.text = "Position the front of your \(document!.translation) in the frame"
             }
         case .documentBack:
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = true
             documentBackFrameStackView.isHidden = false
-            titleLabel.text = document.rawValue
-            descriptionLabel.text = "Position the back of your \(document.rawValue) in the frame"
+            titleLabel.text = document!.translation
+            descriptionLabel.text = "Position the back of your \(document!.translation) in the frame"
         case .none:
             print("error")
         }

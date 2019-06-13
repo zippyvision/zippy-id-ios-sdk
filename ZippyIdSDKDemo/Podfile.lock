@@ -1,21 +1,16 @@
 PODS:
-  - ZippyIdSDK (0.9)
+  - ZippyIdSDK (0.9.1)
 
 DEPENDENCIES:
-  - "ZippyIdSDK (from `git@github.com:zippyvision/zippy-id-ios-sdk.git`)"
+  - ZippyIdSDK (from `..`)
 
 EXTERNAL SOURCES:
   ZippyIdSDK:
-    :git: "git@github.com:zippyvision/zippy-id-ios-sdk.git"
-
-CHECKOUT OPTIONS:
-  ZippyIdSDK:
-    :commit: a993ef1b709d87744dfa40f44683eb1e57708321
-    :git: "git@github.com:zippyvision/zippy-id-ios-sdk.git"
+    :path: ".."
 
 SPEC CHECKSUMS:
-  ZippyIdSDK: 249c77d75538d1194781920cebc6740954a24e2c
+  ZippyIdSDK: 7d8c7b39807082491fee13e39dfcbd27228adf5f
 
-PODFILE CHECKSUM: c9e80420493012fc8fed018bf74c833c65489062
+PODFILE CHECKSUM: 1826789d64ce8eb3aa33d6ac2cba2ab5df61e63c
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.1

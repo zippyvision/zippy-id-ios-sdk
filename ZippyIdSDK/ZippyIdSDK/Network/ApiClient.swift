@@ -9,15 +9,13 @@
 import Foundation
 
 class ApiClient {
-    let secret: String
-    let key: String
+    let apiKey: String
     let baseUrl: String
     var session: URLSession = URLSession(configuration: .ephemeral)
     let decoder = JSONDecoder()
     
-    init(secret: String, key: String, baseUrl: String) {
-        self.secret = secret
-        self.key = key
+    init(apiKey: String, baseUrl: String) {
+        self.apiKey = apiKey
         self.baseUrl = baseUrl
     }
     
@@ -27,7 +25,7 @@ class ApiClient {
             .appendingPathComponent("request_tokens")
         var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.httpBody = "api_key=\(key)&secret_key=\(secret)".data(using: .utf8)
+        request.addValue("Token token=" + apiKey, forHTTPHeaderField: "Authorization")
         
         return session
             .request(request: request)
@@ -38,11 +36,14 @@ class ApiClient {
     }
     
     func sendImages(token: String, document: Document, selfie: UIImage, documentFront: UIImage, documentBack: UIImage?, customerUid: String) -> Future<String> {
+        print("Sending images with customerUid: \(customerUid)")
+        
         let url: URL = URL(string: baseUrl)!
             .appendingPathComponent("v1")
             .appendingPathComponent("verifications")
         var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "POST"
+        
         let postBody: [String: String] = [
             "token": token,
             "document_country": "lv",
@@ -70,15 +71,14 @@ class ApiClient {
             .appendingPathComponent("v1")
             .appendingPathComponent("result")
         let params: [String: String] = [
-            "customer_uid": customerId,
-            "secret_key": secret,
-            "api_key": key,
+            "customer_uid": customerId
         ]
         
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         urlComponents.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }
         var request: URLRequest = URLRequest(url: urlComponents.url!)
         request.httpMethod = "GET"
+        request.addValue("Token token=" + apiKey, forHTTPHeaderField: "Authorization")
         
         return session
             .request(request: request)
