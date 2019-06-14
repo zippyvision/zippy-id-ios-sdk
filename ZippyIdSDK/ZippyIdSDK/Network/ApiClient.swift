@@ -69,7 +69,7 @@ class ApiClient {
     func getJobStatus(customerId: String) -> Future<ZippyResult> {
         let url: URL = URL(string: baseUrl)!
             .appendingPathComponent("v1")
-            .appendingPathComponent("result")
+            .appendingPathComponent("verification")
         let params: [String: String] = [
             "customer_uid": customerId
         ]
