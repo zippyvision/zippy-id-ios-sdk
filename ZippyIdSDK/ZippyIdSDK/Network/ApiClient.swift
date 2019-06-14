@@ -62,7 +62,7 @@ class ApiClient {
             .request(request: request)
             .transformed(with: { (data) -> String in
                 let json: [String: String] = try JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
-                return json["request_id"]!
+                return json["verification_id"]!
             })
     }
     
