@@ -32,7 +32,7 @@ public class ZippyVC: UIViewController {
         super.viewDidLoad()
         
         if !ZippyIdSDK.isInitialized {
-            fatalError("Must call `ZippyIdSDK.initialize(key, secret)` before initalizing ZippyVC")
+            fatalError("Must call `ZippyIdSDK.initialize(apiKey)` before initalizing ZippyVC")
         }
         
         if delegate == nil {
