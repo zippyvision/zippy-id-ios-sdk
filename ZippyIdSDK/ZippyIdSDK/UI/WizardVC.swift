@@ -118,7 +118,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        apiClient = ApiClient(secret: ZippyIdSDK.secret, key: ZippyIdSDK.key, baseUrl: ZippyIdSDK.host)
+        apiClient = ApiClient(apiKey: ZippyIdSDK.apiKey, baseUrl: ZippyIdSDK.host)
         
         assert(delegate != nil)
         

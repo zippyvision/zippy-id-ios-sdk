@@ -29,7 +29,7 @@ class PhotoConfirmationVC: UIViewController {
     }
     
     func adjustForMode() {
-        let documentTypeLabel: String = ((document == .idCard) ? document.rawValue : document.rawValue.lowercased())
+        let documentTypeLabel: String = (document == .idCard) ? document.translation : document.translation.lowercased()
         
         switch mode {
         case .face:
