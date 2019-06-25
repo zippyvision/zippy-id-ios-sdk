@@ -61,7 +61,7 @@ class TakePhotoVC: UIViewController {
             
             let photoConfirmationVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
             
-            photoConfirmationVC.image = image!
+            photoConfirmationVC.image = image
             photoConfirmationVC.delegate = self.delegate
             photoConfirmationVC.nextPhotoStepDelegate = self.nextPhotoStepDelegate
             photoConfirmationVC.mode = self.mode
@@ -83,18 +83,18 @@ class TakePhotoVC: UIViewController {
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = false
             documentBackFrameStackView.isHidden = true
-            titleLabel.text = document!.translation
+            titleLabel.text = document.translation
             if (document == .passport) {
                 descriptionLabel.text = "Position your passport in the frame"
             } else {
-                descriptionLabel.text = "Position the front of your \(document!.translation) in the frame"
+                descriptionLabel.text = "Position the front of your \(document.translation) in the frame"
             }
         case .documentBack:
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = true
             documentBackFrameStackView.isHidden = false
-            titleLabel.text = document!.translation
-            descriptionLabel.text = "Position the back of your \(document!.translation) in the frame"
+            titleLabel.text = document.translation
+            descriptionLabel.text = "Position the back of your \(document.translation) in the frame"
         case .none:
             print("error")
         }

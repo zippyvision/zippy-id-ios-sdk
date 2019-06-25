@@ -70,9 +70,7 @@ class ApiClient {
         let url: URL = URL(string: baseUrl)!
             .appendingPathComponent("v1")
             .appendingPathComponent("verification")
-        let params: [String: String] = [
-            "customer_uid": customerId
-        ]
+        let params: [String: String] = ["customer_uid": customerId]
         
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         urlComponents.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }
