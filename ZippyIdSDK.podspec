@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = "ZippyIdSDK"
-    s.version          = "0.9.1"
+    s.version          = "0.10"
     s.summary          = "Zippy ID (zippyid.com) SDK for iOS"
     s.license          = 'MIT'
     s.author           = { "MAK IT" => "makit.lv" } 
