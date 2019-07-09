@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8423D7A322D39B2700D4B2BE /* ZippyVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423D7A222D39B2700D4B2BE /* ZippyVerification.swift */; };
 		E92FB8322232750A0007BB27 /* PhotoConfirmationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92FB831223275090007BB27 /* PhotoConfirmationVC.swift */; };
 		E93F93C921F0E75200320CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E93F93C821F0E75100320CF8 /* Assets.xcassets */; };
 		E9F6342321EF3F8700F86856 /* ZippyCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6342221EF3F8700F86856 /* ZippyCountry.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8423D7A222D39B2700D4B2BE /* ZippyVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyVerification.swift; sourceTree = "<group>"; };
 		E92FB831223275090007BB27 /* PhotoConfirmationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoConfirmationVC.swift; sourceTree = "<group>"; };
 		E93F93C821F0E75100320CF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E9F6342221EF3F8700F86856 /* ZippyCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZippyCountry.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				FD81311C21E7D11900A30324 /* ZippyCustomerData.swift */,
 				FD81311E21E7D1CD00A30324 /* ZippySessionConfig.swift */,
 				E9F6342221EF3F8700F86856 /* ZippyCountry.swift */,
+				8423D7A222D39B2700D4B2BE /* ZippyVerification.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD81311721E7413E00A30324 /* CameraController.swift in Sources */,
+				8423D7A322D39B2700D4B2BE /* ZippyVerification.swift in Sources */,
 				FD41407621DC7427008543DB /* ZippyVC.swift in Sources */,
 				FD41406D21DC73BA008543DB /* ZippyIdSDK.swift in Sources */,
 				FD598FBB21E5E8E700DFE4FE /* TakePhotoVC.swift in Sources */,

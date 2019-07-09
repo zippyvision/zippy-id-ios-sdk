@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class ApiClient {
     let apiKey: String
@@ -36,7 +37,6 @@ class ApiClient {
     }
     
     func sendImages(token: String, document: Document, selfie: UIImage, documentFront: UIImage, documentBack: UIImage?, customerUid: String) -> Future<String> {
-        print("Sending images with customerUid: \(customerUid)")
         
         let url: URL = URL(string: baseUrl)!
             .appendingPathComponent("v1")
@@ -83,6 +83,18 @@ class ApiClient {
             .transformed(with: { (data) -> ZippyResult in
                 print(String(data: data, encoding: .utf8) ?? "[unparsable]")
                 return try self.decoder.decode([ZippyResult].self, from: data).first!
+            })
+    }
+    
+    func getVerificationStatus(verificationId: String) -> Future<ZippyVerification> {
+        var request: URLRequest = URLRequest(url: URL(string: ZippyIdSDK.host + "sdk/verifications/" + verificationId + "/progress_check")!)
+        request.httpMethod = "GET"
+        
+        return session
+            .request(request: request)
+            .transformed(with: { (data) -> ZippyVerification in
+                print(String.init(data: data, encoding: .utf8) as Any)
+                return try self.decoder.decode(ZippyVerification.self, from: data)
             })
     }
     

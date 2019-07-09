@@ -6,6 +6,7 @@
 //  Copyright © 2019 ZippyId. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
 protocol NextPhotoStep: class {
@@ -167,19 +168,19 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     self.delegate.onCompletedWithError(error: ZippyError.imageSendingFailed)
                 case .value(let id):
                     print("Submited with ID = \(id)")
-                    
+                    self.getVerificationInformation(verificationId: id, zippyResult: nil)
                     DispatchQueue.main.async {
                         self.sendingLabel.text! += " OK"
                         self.zippyCallback?.onSubmit()
                         self.activityIndicator.isHidden = false
-                        self.pollJobStatus()
+                        self.pollJobStatus(verificationId: id)
                     }
                 }
             }
     }
     
     var count = 0
-    private func pollJobStatus() {
+    private func pollJobStatus(verificationId: String) {
         print("Trying to get status: \(count)")
         
         if self.count == 10 {
@@ -197,28 +198,58 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     print(err)
                     self.count += 1
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(2), execute: {
-                        self.pollJobStatus()
+                        self.pollJobStatus(verificationId: verificationId)
                     })
                 case .value(let result):
                     if result.state == .finished {
-                        self.zippyCallback?.onFinished()
-                        self.dismiss(animated: true, completion: nil)
-                        self.delegate.onCompletedSuccessfully(result: result)
+                        self.getVerificationInformation(verificationId: verificationId, zippyResult: result)
                     } else if result.state == .failed {
-                        self.activityIndicator.isHidden = true
-                        self.dismiss(animated: true, completion: nil)
-                        self.delegate.onCompletedWithError(error: ZippyError.processingFailed)
+                        self.getVerificationInformation(verificationId: verificationId, zippyResult: result)
                     } else {
                         print("Scheduling poll")
                         self.count += 1
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(2), execute: {
-                            self.pollJobStatus()
+                            self.pollJobStatus(verificationId: verificationId)
                         })
                     }
                 }
         }
     }
     
+    func getVerificationInformation(verificationId: String, zippyResult: ZippyResult?) {
+        apiClient
+            .getVerificationStatus(verificationId: verificationId)
+            .observe{ (result) in
+                switch result {
+                case .error(let err):
+                    self.activityIndicator.isHidden = true
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate.onCompletedWithError(error: ZippyError.processingFailed) 
+                case .value(let result):
+                    switch result.state {
+                    case .success?:
+                        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+                        self.zippyCallback?.onFinished()
+                        self.delegate.onCompletedSuccessfully(result: zippyResult!)
+                    case .failed?:
+                        self.toErrorVC(verification: result)
+                    default:
+                        break
+                    }
+                }
+        }
+    }
+    
+    func toErrorVC(verification: ZippyVerification) {
+        let bundle = Bundle(for: ZippyVC.self)
+        let errorVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "ErrorVC") as! ErrorVC
+        errorVC.delegate = self.delegate
+        errorVC.selectedDocument = selectedDocument!
+        errorVC.zippyCallback = self.zippyCallback
+        errorVC.zippyVerification = verification
+        self.present(errorVC, animated: false, completion: nil)
+    }
+
     func adjustViews(_ enlargeConstraint: NSLayoutConstraint?, _ decreaseConstraint: NSLayoutConstraint?, _ showLabel: UILabel?, _ hideLabel: UILabel?) {
         enlargeConstraint?.constant = 91
         decreaseConstraint?.constant = 41
