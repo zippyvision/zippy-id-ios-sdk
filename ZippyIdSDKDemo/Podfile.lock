@@ -1,16 +1,23 @@
 PODS:
-  - ZippyIdSDK (0.9.1)
+  - SwiftLint (0.33.1)
+  - ZippyIdSDK (0.10)
 
 DEPENDENCIES:
+  - SwiftLint
   - ZippyIdSDK (from `..`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SwiftLint
 
 EXTERNAL SOURCES:
   ZippyIdSDK:
     :path: ".."
 
 SPEC CHECKSUMS:
-  ZippyIdSDK: 7d8c7b39807082491fee13e39dfcbd27228adf5f
+  SwiftLint: 9fc1143bbacec37f94994a7d0d2a85b2154b6294
+  ZippyIdSDK: e75d4f103f0cd4908d8205fb87b3753152c7be2f
 
-PODFILE CHECKSUM: 1826789d64ce8eb3aa33d6ac2cba2ab5df61e63c
+PODFILE CHECKSUM: 3ba5a5b20adf5bfeecf46dd3e450b4c1fc05b408
 
 COCOAPODS: 1.7.1

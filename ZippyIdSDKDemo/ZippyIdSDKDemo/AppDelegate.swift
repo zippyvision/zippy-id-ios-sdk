@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        ZippyIdSDK.initialize(apiKey: "a9adc0e08ccf68a7427a09612c046e17fbc9564bbc5712df9435dc3c67af579b059aa2f016e779a2")
+        ZippyIdSDK.initialize(apiKey: "96d648cb194cd2e085cff4c2c2860ae7d83984398ab8020e66782116e4ab4d01bb900a73e86bf5fa")
         return true
     }
 }
