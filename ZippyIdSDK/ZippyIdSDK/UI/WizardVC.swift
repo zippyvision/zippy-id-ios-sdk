@@ -285,6 +285,11 @@ extension WizardVC: NextStepDelegate {
     }
     
     func onRetryCallback(vc: ErrorVC, verification: ZippyVerification) {
-        self.apiClient = ApiClient(apiKey: verification.requestToken!, baseUrl: ZippyIdSDK.host)
+        if let token = verification.requestToken {
+            self.apiClient = ApiClient(apiKey: token, baseUrl: ZippyIdSDK.host)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+            self.delegate.onCompletedWithError(error: ZippyError.processingFailed)
+        }
     }
 }
