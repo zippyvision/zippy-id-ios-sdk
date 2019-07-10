@@ -21,10 +21,4 @@ public enum ZippyVerificationState: String, Codable {
     case success = "success"
     case failed = "failed"
     case inProgress = ""
-    
-    public init(from decoder: Decoder) throws {
-        let valueContainer: SingleValueDecodingContainer = try! decoder.singleValueContainer()
-        let val: String? = try! valueContainer.decode(String.self)
-        self = ZippyVerificationState(rawValue: val!) ?? .inProgress
-    }
 }

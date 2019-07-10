@@ -9,9 +9,10 @@
 import UIKit
 import Foundation
 
-protocol NextPhotoStep: class {
+protocol NextStepDelegate: class {
     func onAccept(vc: PhotoConfirmationVC, image: UIImage)
     func onError(vc: TakePhotoVC, error: ZippyError)
+    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification) 
 }
 
 public enum ZippyImageMode {
@@ -63,9 +64,8 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .face
             photoVC.mode = currentImage
-            photoVC.document = selectedDocument
             photoVC.delegate = self.delegate
-            photoVC.nextPhotoStepDelegate = self
+            photoVC.nextStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
         } else if documentFront == nil {
             button.isEnabled = true
@@ -74,9 +74,8 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .documentFront
             photoVC.mode = currentImage
-            photoVC.document = selectedDocument
             photoVC.delegate = self.delegate
-            photoVC.nextPhotoStepDelegate = self
+            photoVC.nextStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
         } else if documentBack == nil && isPassport != true {
             button.isEnabled = true
@@ -85,9 +84,8 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             
             currentImage = .documentBack
             photoVC.mode = currentImage
-            photoVC.document = selectedDocument
             photoVC.delegate = self.delegate
-            photoVC.nextPhotoStepDelegate = self
+            photoVC.nextStepDelegate = self
             self.present(photoVC, animated: true, completion: nil)
         } else {
             button.isEnabled = false
@@ -98,7 +96,6 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     
     public weak var delegate: ZippyVCDelegate!
     public weak var zippyCallback: ZippyCallback?
-    weak var nextPhotoStepDelegate: NextPhotoStep! = nil
     
     private let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
     private let decoder = JSONDecoder()
@@ -111,7 +108,6 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private var documentFront: UIImage?
     private var documentBack: UIImage?
 
-    var selectedDocument: Document!
     var isPassport = false
     
     var apiClient: ApiClient!
@@ -126,7 +122,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
         apiClient.session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue.main)
         configuration = delegate.getSessionConfiguration()
         
-        isPassport = (selectedDocument == .passport)
+        isPassport = (configuration.documentType == .passport)
         
         if isPassport {
             documentBackView.removeFromSuperview()
@@ -160,7 +156,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private func send() {
         progressView.isHidden = false
         progressPercentageLabel.isHidden = false
-        apiClient.sendImages(token: token!, document: selectedDocument, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
+        apiClient.sendImages(token: token!, document: configuration.documentType, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
             .observe { (result) in
                 switch result {
                 case .error:
@@ -168,7 +164,6 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     self.delegate.onCompletedWithError(error: ZippyError.imageSendingFailed)
                 case .value(let id):
                     print("Submited with ID = \(id)")
-                    self.getVerificationInformation(verificationId: id, zippyResult: nil)
                     DispatchQueue.main.async {
                         self.sendingLabel.text! += " OK"
                         self.zippyCallback?.onSubmit()
@@ -201,10 +196,9 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                         self.pollJobStatus(verificationId: verificationId)
                     })
                 case .value(let result):
-                    if result.state == .finished {
+                    if (result.state != .unknown && result.state != .processing) {
                         self.getVerificationInformation(verificationId: verificationId, zippyResult: result)
-                    } else if result.state == .failed {
-                        self.getVerificationInformation(verificationId: verificationId, zippyResult: result)
+                        return
                     } else {
                         print("Scheduling poll")
                         self.count += 1
@@ -221,7 +215,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             .getVerificationStatus(verificationId: verificationId)
             .observe{ (result) in
                 switch result {
-                case .error(let err):
+                case .error( _):
                     self.activityIndicator.isHidden = true
                     self.dismiss(animated: true, completion: nil)
                     self.delegate.onCompletedWithError(error: ZippyError.processingFailed) 
@@ -244,8 +238,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
         let bundle = Bundle(for: ZippyVC.self)
         let errorVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "ErrorVC") as! ErrorVC
         errorVC.delegate = self.delegate
-        errorVC.selectedDocument = selectedDocument!
-        errorVC.zippyCallback = self.zippyCallback
+        errorVC.nextStepDelegate = self
         errorVC.zippyVerification = verification
         self.present(errorVC, animated: false, completion: nil)
     }
@@ -258,7 +251,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     }
 }
 
-extension WizardVC: NextPhotoStep {
+extension WizardVC: NextStepDelegate {
     func onAccept(vc: PhotoConfirmationVC, image: UIImage) {
         switch currentImage {
         case .face:
@@ -289,5 +282,9 @@ extension WizardVC: NextPhotoStep {
         currentImage = .none
         
         delegate.onCompletedWithError(error: error)
+    }
+    
+    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification) {
+        self.apiClient = ApiClient(apiKey: verification.requestToken!, baseUrl: ZippyIdSDK.host)
     }
 }

@@ -14,9 +14,8 @@ class ErrorVC: UIViewController {
     @IBOutlet weak var retryButton: UIButton!
     
     public weak var delegate: ZippyVCDelegate!
-    var selectedDocument: Document!
+    public weak var nextStepDelegate: NextStepDelegate! = nil
     var zippyVerification: ZippyVerification!
-    public weak var zippyCallback: ZippyCallback?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,13 +27,9 @@ class ErrorVC: UIViewController {
         let bundle = Bundle(for: ZippyVC.self)
         let wizardVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC
         wizardVC.delegate = self.delegate
-        wizardVC.selectedDocument = selectedDocument!
-        wizardVC.zippyCallback = self.zippyCallback
-        wizardVC.apiClient = ApiClient(apiKey: zippyVerification.requestToken!, baseUrl: ZippyIdSDK.host)
         
-        weak var presentingViewController = self.presentingViewController
-        self.dismiss(animated: true, completion: {
-            presentingViewController?.present(wizardVC, animated: false, completion: nil)
+        presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+            self.nextStepDelegate.onRetryCallback(vc: self, verification: self.zippyVerification)
         })
     }
 }
