@@ -8,6 +8,10 @@
 import UIKit
 import Foundation
 
+protocol RetryDelegate: class {
+    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification)
+}
+
 class ErrorVC: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!

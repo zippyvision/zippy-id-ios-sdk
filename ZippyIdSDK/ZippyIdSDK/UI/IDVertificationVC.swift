@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol RetryDelegate: class {
-    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification)
-}
-
 class IDVertificationVC: UIViewController {
     var wizardVC: WizardVC!
     public weak var delegate: ZippyVCDelegate!
