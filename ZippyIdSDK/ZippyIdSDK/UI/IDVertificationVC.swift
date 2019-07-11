@@ -207,7 +207,6 @@ class DocumentDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDa
 extension IDVertificationVC: RetryDelegate {
     func onRetryCallback(vc: ErrorVC, verification: ZippyVerification) {
         if let token = verification.requestToken {
-            self.apiClient = ApiClient(apiKey: token, baseUrl: ZippyIdSDK.host)
             self.retryToken = token
         } else {
             self.dismiss(animated: true, completion: nil)
