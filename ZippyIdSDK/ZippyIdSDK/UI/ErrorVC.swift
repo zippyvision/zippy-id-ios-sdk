@@ -17,7 +17,6 @@ class ErrorVC: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var retryButton: UIButton!
     
-    public weak var delegate: ZippyVCDelegate!
     public weak var retryDelegate: RetryDelegate!
     var zippyVerification: ZippyVerification!
     

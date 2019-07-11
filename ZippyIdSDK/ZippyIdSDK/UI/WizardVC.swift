@@ -88,14 +88,22 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private var configuration: ZippySessionConfig! = nil
     private var currentImage: ZippyImageMode = .none
     
-    private var token: String?
+    var token: String? {
+        didSet {
+            DispatchQueue.main.async {
+                self.preparingLabel.text! += " OK"
+                self.button.isEnabled = true
+                self.button.setTitle("Uzņemt sejas attēlu", for: .normal)
+                self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
+            }
+        }
+    }
     private var face: UIImage?
     private var documentFront: UIImage?
     private var documentBack: UIImage?
     
 
     var isPassport = false
-    var retryToken: String?
     var apiClient: ApiClient!
     
     override func viewDidLoad() {
@@ -112,29 +120,16 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             documentBackView.removeFromSuperview()
         }
         
-        if (retryToken == nil) {
+        if (token == nil) {
             apiClient.getToken()
                 .observe { (result) in
                     switch result {
                     case .error:
                         ()
                     case .value(let token):
-                        self.applyToken(thisToken: token)
+                        self.token = token
                     }
             }
-        } else {
-            applyToken(thisToken: retryToken!)
-        }
-    }
-    
-    private func applyToken(thisToken: String) {
-        self.token = thisToken
-        
-        DispatchQueue.main.async {
-            self.preparingLabel.text! += " OK"
-            self.button.isEnabled = true
-            self.button.setTitle("Uzņemt sejas attēlu", for: .normal)
-            self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
         }
     }
     
@@ -229,7 +224,6 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     func toErrorVC(verification: ZippyVerification) {
         let bundle = Bundle(for: ZippyVC.self)
         let errorVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "ErrorVC") as! ErrorVC
-        errorVC.delegate = self.delegate
         errorVC.retryDelegate = self.retryDelegate
         errorVC.zippyVerification = verification
         self.present(errorVC, animated: false, completion: nil)

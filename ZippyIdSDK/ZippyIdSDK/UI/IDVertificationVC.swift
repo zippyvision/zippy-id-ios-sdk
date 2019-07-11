@@ -85,13 +85,8 @@ class IDVertificationVC: UIViewController {
     var apiClient: ApiClient!
     var retryToken: String?
     
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-    
-    }
-    
     public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
+        super.viewDidAppear(false)
         
         if (apiClient == nil) {
             apiClient = ApiClient(apiKey: ZippyIdSDK.apiKey, baseUrl: ZippyIdSDK.host)
@@ -133,7 +128,7 @@ class IDVertificationVC: UIViewController {
         self.wizardVC.zippyCallback = self.zippyCallback
         self.wizardVC.apiClient = apiClient
         self.wizardVC.retryDelegate = self
-        self.wizardVC.retryToken = retryToken
+        self.wizardVC.token = retryToken
         self.present(self.wizardVC, animated: false, completion: nil)
     }
     
