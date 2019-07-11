@@ -15,7 +15,11 @@ protocol RetryDelegate: class {
 class ErrorVC: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak var retryButton: UIButton! {
+        didSet {
+            retryButton.layer.cornerRadius = 20
+        }
+    }
     
     public weak var retryDelegate: RetryDelegate!
     var zippyVerification: ZippyVerification!

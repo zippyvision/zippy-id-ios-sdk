@@ -10,8 +10,16 @@ import Foundation
 class PhotoConfirmationVC: UIViewController {
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var isReadableButton: UIButton!
-    @IBOutlet weak var takePhotoButton: UIButton!
+    @IBOutlet weak var isReadableButton: UIButton! {
+        didSet {
+            isReadableButton.layer.cornerRadius = 20
+        }
+    }
+    @IBOutlet weak var takePhotoButton: UIButton! {
+        didSet {
+            takePhotoButton.layer.cornerRadius = 20
+        }
+    }
     
     public weak var delegate: ZippyVCDelegate!
     private var configuration: ZippySessionConfig! = nil
