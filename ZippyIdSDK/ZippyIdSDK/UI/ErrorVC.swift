@@ -14,7 +14,7 @@ class ErrorVC: UIViewController {
     @IBOutlet weak var retryButton: UIButton!
     
     public weak var delegate: ZippyVCDelegate!
-    public weak var nextStepDelegate: NextStepDelegate! = nil
+    public weak var retryDelegate: RetryDelegate!
     var zippyVerification: ZippyVerification!
     
     override func viewDidLoad() {
@@ -23,13 +23,9 @@ class ErrorVC: UIViewController {
         descriptionLabel.text = "Reason: " + (zippyVerification.error ?? "unknown")
     }
     
-    @IBAction func onRetryTap(_ sender: UIButton) {
-        let bundle = Bundle(for: ZippyVC.self)
-        let wizardVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC
-        wizardVC.delegate = self.delegate
-        
+    @IBAction func onRetryTap(_ sender: UIButton) {        
         presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-            self.nextStepDelegate.onRetryCallback(vc: self, verification: self.zippyVerification)
+            self.retryDelegate.onRetryCallback(vc: self, verification: self.zippyVerification)
         })
     }
 }

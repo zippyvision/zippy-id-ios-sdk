@@ -12,7 +12,6 @@ import Foundation
 protocol NextStepDelegate: class {
     func onAccept(vc: PhotoConfirmationVC, image: UIImage)
     func onError(vc: TakePhotoVC, error: ZippyError)
-    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification) 
 }
 
 public enum ZippyImageMode {
@@ -53,49 +52,35 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction func onButtonTap(_ sender: Any) {
-        let bundle = Bundle(for: ZippyVC.self)
-        
         if token == nil {
             button.isEnabled = false
         } else if face == nil {
-            button.isEnabled = true
-            
-            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
-            
-            currentImage = .face
-            photoVC.mode = currentImage
-            photoVC.delegate = self.delegate
-            photoVC.nextStepDelegate = self
-            self.present(photoVC, animated: true, completion: nil)
+            toPhotoViewController(true, .face)
         } else if documentFront == nil {
-            button.isEnabled = true
-
-            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
-            
-            currentImage = .documentFront
-            photoVC.mode = currentImage
-            photoVC.delegate = self.delegate
-            photoVC.nextStepDelegate = self
-            self.present(photoVC, animated: true, completion: nil)
+            toPhotoViewController(true, .documentFront)
         } else if documentBack == nil && isPassport != true {
-            button.isEnabled = true
-
-            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
-            
-            currentImage = .documentBack
-            photoVC.mode = currentImage
-            photoVC.delegate = self.delegate
-            photoVC.nextStepDelegate = self
-            self.present(photoVC, animated: true, completion: nil)
+            toPhotoViewController(true, .documentBack)
         } else {
             button.isEnabled = false
-            
             send()
         }
     }
     
+    private func toPhotoViewController(_ enabledButton: Bool, _ mode: ZippyImageMode) {
+        button.isEnabled = enabledButton
+        currentImage = mode
+
+        let bundle = Bundle(for: ZippyVC.self)
+        let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
+        photoVC.mode = currentImage
+        photoVC.delegate = self.delegate
+        photoVC.nextStepDelegate = self
+        self.present(photoVC, animated: true, completion: nil)
+    }
+    
     public weak var delegate: ZippyVCDelegate!
     public weak var zippyCallback: ZippyCallback?
+    public weak var retryDelegate: RetryDelegate! = nil
     
     private let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
     private let decoder = JSONDecoder()
@@ -107,16 +92,15 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private var face: UIImage?
     private var documentFront: UIImage?
     private var documentBack: UIImage?
+    
 
     var isPassport = false
-    
+    var retryToken: String?
     var apiClient: ApiClient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        apiClient = ApiClient(apiKey: ZippyIdSDK.apiKey, baseUrl: ZippyIdSDK.host)
-        
+                
         assert(delegate != nil)
         
         apiClient.session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue.main)
@@ -128,21 +112,29 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
             documentBackView.removeFromSuperview()
         }
         
-        apiClient.getToken()
-            .observe { (result) in
-                switch result {
-                case .error:
-                    ()
-                case .value(let token):
-                    self.token = token
-        
-                    DispatchQueue.main.async {
-                        self.preparingLabel.text! += " OK"
-                        self.button.isEnabled = true
-                        self.button.setTitle("Uzņemt sejas attēlu", for: .normal)
-                        self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
+        if (retryToken == nil) {
+            apiClient.getToken()
+                .observe { (result) in
+                    switch result {
+                    case .error:
+                        ()
+                    case .value(let token):
+                        self.applyToken(thisToken: token)
                     }
-                }
+            }
+        } else {
+            applyToken(thisToken: retryToken!)
+        }
+    }
+    
+    private func applyToken(thisToken: String) {
+        self.token = thisToken
+        
+        DispatchQueue.main.async {
+            self.preparingLabel.text! += " OK"
+            self.button.isEnabled = true
+            self.button.setTitle("Uzņemt sejas attēlu", for: .normal)
+            self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
         }
     }
     
@@ -238,7 +230,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
         let bundle = Bundle(for: ZippyVC.self)
         let errorVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "ErrorVC") as! ErrorVC
         errorVC.delegate = self.delegate
-        errorVC.nextStepDelegate = self
+        errorVC.retryDelegate = self.retryDelegate
         errorVC.zippyVerification = verification
         self.present(errorVC, animated: false, completion: nil)
     }
@@ -282,14 +274,5 @@ extension WizardVC: NextStepDelegate {
         currentImage = .none
         
         delegate.onCompletedWithError(error: error)
-    }
-    
-    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification) {
-        if let token = verification.requestToken {
-            self.apiClient = ApiClient(apiKey: token, baseUrl: ZippyIdSDK.host)
-        } else {
-            self.dismiss(animated: true, completion: nil)
-            self.delegate.onCompletedWithError(error: ZippyError.processingFailed)
-        }
     }
 }

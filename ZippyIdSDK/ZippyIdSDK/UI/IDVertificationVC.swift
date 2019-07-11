@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol RetryDelegate: class {
+    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification)
+}
+
 class IDVertificationVC: UIViewController {
     var wizardVC: WizardVC!
     public weak var delegate: ZippyVCDelegate!
@@ -82,10 +86,20 @@ class IDVertificationVC: UIViewController {
         }
     }
     
+    var apiClient: ApiClient!
+    var retryToken: String?
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
+    
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         
-        let apiClient = ApiClient(apiKey: ZippyIdSDK.apiKey, baseUrl: ZippyIdSDK.host)
+        if (apiClient == nil) {
+            apiClient = ApiClient(apiKey: ZippyIdSDK.apiKey, baseUrl: ZippyIdSDK.host)
+        }
         
         apiClient
             .getCountries()
@@ -96,7 +110,6 @@ class IDVertificationVC: UIViewController {
                         self.delegate.onCompletedWithError(error: ZippyError.otherError(err))
                     case .value(let result):
                         self.loaderView.isHidden = true
-                        
                         self.countries = result
                     }
                 }
@@ -122,6 +135,9 @@ class IDVertificationVC: UIViewController {
         self.wizardVC = (UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "WizardVC") as! WizardVC)
         self.wizardVC.delegate = self.delegate
         self.wizardVC.zippyCallback = self.zippyCallback
+        self.wizardVC.apiClient = apiClient
+        self.wizardVC.retryDelegate = self
+        self.wizardVC.retryToken = retryToken
         self.present(self.wizardVC, animated: false, completion: nil)
     }
     
@@ -185,5 +201,17 @@ class DocumentDataSourceDelegate: NSObject, UIPickerViewDelegate, UIPickerViewDa
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedDocument = selectedCountry?.documents[row]
+    }
+}
+
+extension IDVertificationVC: RetryDelegate {
+    func onRetryCallback(vc: ErrorVC, verification: ZippyVerification) {
+        if let token = verification.requestToken {
+            self.apiClient = ApiClient(apiKey: token, baseUrl: ZippyIdSDK.host)
+            self.retryToken = token
+        } else {
+            self.dismiss(animated: true, completion: nil)
+            self.delegate.onCompletedWithError(error: ZippyError.processingFailed)
+        }
     }
 }
