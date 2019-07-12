@@ -71,7 +71,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
         currentImage = mode
 
         let bundle = Bundle(for: ZippyVC.self)
-        let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
+        let photoVC = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
         photoVC.mode = currentImage
         photoVC.delegate = self.delegate
         photoVC.nextStepDelegate = self
@@ -223,7 +223,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     
     func toErrorVC(verification: ZippyVerification) {
         let bundle = Bundle(for: ZippyVC.self)
-        let errorVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "ErrorVC") as! ErrorVC
+        let errorVC = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "ErrorVC") as! ErrorVC
         errorVC.retryDelegate = self.retryDelegate
         errorVC.zippyVerification = verification
         self.present(errorVC, animated: false, completion: nil)

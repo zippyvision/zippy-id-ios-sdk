@@ -61,7 +61,7 @@ class TakePhotoVC: UIViewController {
             
             let bundle = Bundle(for: ZippyVC.self)
             
-            let photoConfirmationVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
+            let photoConfirmationVC = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
             
             photoConfirmationVC.image = image
             photoConfirmationVC.delegate = self.delegate

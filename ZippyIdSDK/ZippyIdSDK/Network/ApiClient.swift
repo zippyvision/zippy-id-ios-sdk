@@ -86,7 +86,13 @@ class ApiClient {
     }
     
     func getVerificationStatus(verificationId: String) -> Future<ZippyVerification> {
-        var request: URLRequest = URLRequest(url: URL(string: ZippyIdSDK.host + "sdk/verifications/" + verificationId + "/progress_check")!)
+        let url: URL = URL(string: baseUrl)!
+            .appendingPathComponent("sdk")
+            .appendingPathComponent("verifications")
+            .appendingPathComponent(verificationId)
+            .appendingPathComponent("progress_check")
+
+        var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "GET"
         
         return session
