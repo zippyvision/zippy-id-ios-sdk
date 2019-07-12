@@ -17,10 +17,10 @@ class TakePhotoVC: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     
     public weak var delegate: ZippyVCDelegate!
-    weak var nextPhotoStepDelegate: NextPhotoStep! = nil
+    private var configuration: ZippySessionConfig! = nil
+    public weak var nextStepDelegate: NextStepDelegate! = nil
     let cameraController = CameraController()
     var mode: ZippyImageMode = .none
-    var document: Document!
     var timer = Timer()
     
     @IBAction func onClickTap(_ sender: Any) {
@@ -30,20 +30,22 @@ class TakePhotoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if nextPhotoStepDelegate == nil {
+        configuration = delegate.getSessionConfiguration()
+        
+        if nextStepDelegate == nil {
             self.dismiss(animated: true, completion: nil)
         }
         
         cameraController.prepare { (error) in
             if let error = error {
-                self.nextPhotoStepDelegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
+                self.nextStepDelegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
                 return
             }
             
             do {
                 try self.cameraController.displayPreview(on: self.cameraView)
             } catch let error {
-                self.nextPhotoStepDelegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
+                self.nextStepDelegate.onError(vc: self, error: ZippyError.cameraWrappedError(error))
                 return
             }
             
@@ -59,13 +61,12 @@ class TakePhotoVC: UIViewController {
             
             let bundle = Bundle(for: ZippyVC.self)
             
-            let photoConfirmationVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
+            let photoConfirmationVC = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "PhotoConfirmationVC") as! PhotoConfirmationVC
             
             photoConfirmationVC.image = image
             photoConfirmationVC.delegate = self.delegate
-            photoConfirmationVC.nextPhotoStepDelegate = self.nextPhotoStepDelegate
+            photoConfirmationVC.nextStepDelegate = self.nextStepDelegate
             photoConfirmationVC.mode = self.mode
-            photoConfirmationVC.document = self.document
             self.present(photoConfirmationVC, animated: true, completion: nil)
         }
     }
@@ -83,18 +84,18 @@ class TakePhotoVC: UIViewController {
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = false
             documentBackFrameStackView.isHidden = true
-            titleLabel.text = document.translation
-            if (document == .passport) {
+            titleLabel.text = configuration.documentType.translation
+            if (configuration.documentType == .passport) {
                 descriptionLabel.text = "Position your passport in the frame"
             } else {
-                descriptionLabel.text = "Position the front of your \(document.translation) in the frame"
+                descriptionLabel.text = "Position the front of your \(configuration.documentType.translation) in the frame"
             }
         case .documentBack:
             faceFrameStackView.isHidden = true
             documentFrontFrameStackView.isHidden = true
             documentBackFrameStackView.isHidden = false
-            titleLabel.text = document.translation
-            descriptionLabel.text = "Position the back of your \(document.translation) in the frame"
+            titleLabel.text = configuration.documentType.translation
+            descriptionLabel.text = "Position the back of your \(configuration.documentType.translation) in the frame"
         case .none:
             print("error")
         }

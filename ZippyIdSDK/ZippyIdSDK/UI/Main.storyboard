@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -659,11 +659,84 @@
             </objects>
             <point key="canvasLocation" x="-535.20000000000005" y="234.33283358320841"/>
         </scene>
+        <!--ErrorVC-->
+        <scene sceneID="zwu-rM-aYf">
+            <objects>
+                <viewController restorationIdentifier="PhotoConfirmationVC" storyboardIdentifier="ErrorVC" id="xda-rF-qCe" customClass="ErrorVC" customModule="ZippyIdSDK" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="B3U-md-zpd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reason: Document images don't contain a supported document. Please make sure document is visible in the document images." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p5z-RC-ZKo">
+                                <rect key="frame" x="30" y="417" width="315" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="rC4-b1-2BG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9j6-Em-8WT">
+                                <rect key="frame" x="50" y="567" width="275" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="31z-kI-j8n"/>
+                                </constraints>
+                                <color key="tintColor" red="0.97227032229999999" green="0.97920274169999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Retry"/>
+                                <connections>
+                                    <action selector="onRetryTap:" destination="xda-rF-qCe" eventType="touchUpInside" id="cEP-0N-eQP"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="q81-hG-23v">
+                                <rect key="frame" x="87.5" y="70" width="200" height="62"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="RsF-fR-xmG"/>
+                                    <constraint firstAttribute="height" constant="62" id="cWD-Od-TCy"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verification was not successful." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWp-Tf-UqO">
+                                <rect key="frame" x="20" y="342" width="335" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="zVC-O9-qBu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TWp-Tf-UqO" firstAttribute="leading" secondItem="3vb-sK-5Lg" secondAttribute="leading" constant="20" id="AxQ-Cp-Pge"/>
+                            <constraint firstItem="p5z-RC-ZKo" firstAttribute="top" secondItem="TWp-Tf-UqO" secondAttribute="bottom" constant="25" id="JPd-UY-4P4"/>
+                            <constraint firstItem="3vb-sK-5Lg" firstAttribute="trailing" secondItem="9j6-Em-8WT" secondAttribute="trailing" constant="50" id="TW2-Ki-ZTM"/>
+                            <constraint firstItem="3vb-sK-5Lg" firstAttribute="bottom" secondItem="9j6-Em-8WT" secondAttribute="bottom" constant="50" id="aBf-af-ieL"/>
+                            <constraint firstItem="9j6-Em-8WT" firstAttribute="leading" secondItem="3vb-sK-5Lg" secondAttribute="leading" constant="50" id="drK-7s-cmr"/>
+                            <constraint firstItem="p5z-RC-ZKo" firstAttribute="leading" secondItem="3vb-sK-5Lg" secondAttribute="leading" constant="30" id="eZo-rS-51x"/>
+                            <constraint firstItem="q81-hG-23v" firstAttribute="centerX" secondItem="B3U-md-zpd" secondAttribute="centerX" id="hUh-yd-jPt"/>
+                            <constraint firstItem="9j6-Em-8WT" firstAttribute="top" secondItem="p5z-RC-ZKo" secondAttribute="bottom" constant="50" id="l5j-5e-GYJ"/>
+                            <constraint firstItem="3vb-sK-5Lg" firstAttribute="trailing" secondItem="TWp-Tf-UqO" secondAttribute="trailing" constant="20" id="sE0-NY-H23"/>
+                            <constraint firstItem="3vb-sK-5Lg" firstAttribute="trailing" secondItem="p5z-RC-ZKo" secondAttribute="trailing" constant="30" id="usS-QB-OT4"/>
+                            <constraint firstItem="q81-hG-23v" firstAttribute="top" secondItem="3vb-sK-5Lg" secondAttribute="top" constant="50" id="wvD-qB-J6C"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3vb-sK-5Lg"/>
+                    </view>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="p5z-RC-ZKo" id="pCr-hO-YC8"/>
+                        <outlet property="retryButton" destination="9j6-Em-8WT" id="Yf4-w3-VES"/>
+                        <outlet property="titleLabel" destination="TWp-Tf-UqO" id="sUr-mw-dI1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2cb-v8-FyM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1909.5999999999999" y="234.33283358320841"/>
+        </scene>
     </scenes>
     <resources>
         <image name="camera_button" width="126" height="126"/>
-        <image name="document_front" width="290" height="166"/>
-        <image name="face_frame" width="500" height="500"/>
-        <image name="opaque_background" width="250" height="100"/>
+        <image name="document_front" width="145" height="83"/>
+        <image name="face_frame" width="166.66667175292969" height="166.66667175292969"/>
+        <image name="logo" width="99" height="30.333333969116211"/>
+        <image name="opaque_background" width="83.333335876464844" height="33.333332061767578"/>
     </resources>
 </document>

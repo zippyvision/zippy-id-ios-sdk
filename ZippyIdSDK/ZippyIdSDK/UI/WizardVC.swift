@@ -6,9 +6,10 @@
 //  Copyright © 2019 ZippyId. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
-protocol NextPhotoStep: class {
+protocol NextStepDelegate: class {
     func onAccept(vc: PhotoConfirmationVC, image: UIImage)
     func onError(vc: TakePhotoVC, error: ZippyError)
 }
@@ -51,53 +52,35 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction func onButtonTap(_ sender: Any) {
-        let bundle = Bundle(for: ZippyVC.self)
-        
         if token == nil {
             button.isEnabled = false
         } else if face == nil {
-            button.isEnabled = true
-            
-            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
-            
-            currentImage = .face
-            photoVC.mode = currentImage
-            photoVC.document = selectedDocument
-            photoVC.delegate = self.delegate
-            photoVC.nextPhotoStepDelegate = self
-            self.present(photoVC, animated: true, completion: nil)
+            toPhotoViewController(true, .face)
         } else if documentFront == nil {
-            button.isEnabled = true
-
-            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
-            
-            currentImage = .documentFront
-            photoVC.mode = currentImage
-            photoVC.document = selectedDocument
-            photoVC.delegate = self.delegate
-            photoVC.nextPhotoStepDelegate = self
-            self.present(photoVC, animated: true, completion: nil)
+            toPhotoViewController(true, .documentFront)
         } else if documentBack == nil && isPassport != true {
-            button.isEnabled = true
-
-            let photoVC = UIStoryboard.init(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
-            
-            currentImage = .documentBack
-            photoVC.mode = currentImage
-            photoVC.document = selectedDocument
-            photoVC.delegate = self.delegate
-            photoVC.nextPhotoStepDelegate = self
-            self.present(photoVC, animated: true, completion: nil)
+            toPhotoViewController(true, .documentBack)
         } else {
             button.isEnabled = false
-            
             send()
         }
     }
     
+    private func toPhotoViewController(_ enabledButton: Bool, _ mode: ZippyImageMode) {
+        button.isEnabled = enabledButton
+        currentImage = mode
+
+        let bundle = Bundle(for: ZippyVC.self)
+        let photoVC = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "TakePhotoVC") as! TakePhotoVC
+        photoVC.mode = currentImage
+        photoVC.delegate = self.delegate
+        photoVC.nextStepDelegate = self
+        self.present(photoVC, animated: true, completion: nil)
+    }
+    
     public weak var delegate: ZippyVCDelegate!
     public weak var zippyCallback: ZippyCallback?
-    weak var nextPhotoStepDelegate: NextPhotoStep! = nil
+    public weak var retryDelegate: RetryDelegate! = nil
     
     private let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
     private let decoder = JSONDecoder()
@@ -105,47 +88,48 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private var configuration: ZippySessionConfig! = nil
     private var currentImage: ZippyImageMode = .none
     
-    private var token: String?
+    var token: String? {
+        didSet {
+            DispatchQueue.main.async {
+                self.preparingLabel.text! += " OK"
+                self.button.isEnabled = true
+                self.button.setTitle("Uzņemt sejas attēlu", for: .normal)
+                self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
+            }
+        }
+    }
     private var face: UIImage?
     private var documentFront: UIImage?
     private var documentBack: UIImage?
-
-    var selectedDocument: Document!
-    var isPassport = false
     
+
+    var isPassport = false
     var apiClient: ApiClient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        apiClient = ApiClient(apiKey: ZippyIdSDK.apiKey, baseUrl: ZippyIdSDK.host)
-        
+                
         assert(delegate != nil)
         
         apiClient.session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: OperationQueue.main)
         configuration = delegate.getSessionConfiguration()
         
-        isPassport = (selectedDocument == .passport)
+        isPassport = (configuration.documentType == .passport)
         
         if isPassport {
             documentBackView.removeFromSuperview()
         }
         
-        apiClient.getToken()
-            .observe { (result) in
-                switch result {
-                case .error:
-                    ()
-                case .value(let token):
-                    self.token = token
-        
-                    DispatchQueue.main.async {
-                        self.preparingLabel.text! += " OK"
-                        self.button.isEnabled = true
-                        self.button.setTitle("Uzņemt sejas attēlu", for: .normal)
-                        self.adjustViews(self.faceViewHeight, nil, self.faceImageDescLabel, nil)
+        if (token == nil) {
+            apiClient.getToken()
+                .observe { (result) in
+                    switch result {
+                    case .error:
+                        ()
+                    case .value(let token):
+                        self.token = token
                     }
-                }
+            }
         }
     }
     
@@ -159,7 +143,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     private func send() {
         progressView.isHidden = false
         progressPercentageLabel.isHidden = false
-        apiClient.sendImages(token: token!, document: selectedDocument, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
+        apiClient.sendImages(token: token!, document: configuration.documentType, selfie: face!, documentFront: documentFront!, documentBack: documentBack, customerUid: configuration.customerId)
             .observe { (result) in
                 switch result {
                 case .error:
@@ -167,19 +151,18 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     self.delegate.onCompletedWithError(error: ZippyError.imageSendingFailed)
                 case .value(let id):
                     print("Submited with ID = \(id)")
-                    
                     DispatchQueue.main.async {
                         self.sendingLabel.text! += " OK"
                         self.zippyCallback?.onSubmit()
                         self.activityIndicator.isHidden = false
-                        self.pollJobStatus()
+                        self.pollJobStatus(verificationId: id)
                     }
                 }
             }
     }
     
     var count = 0
-    private func pollJobStatus() {
+    private func pollJobStatus(verificationId: String) {
         print("Trying to get status: \(count)")
         
         if self.count == 10 {
@@ -197,28 +180,55 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
                     print(err)
                     self.count += 1
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(2), execute: {
-                        self.pollJobStatus()
+                        self.pollJobStatus(verificationId: verificationId)
                     })
                 case .value(let result):
-                    if result.state == .finished {
-                        self.zippyCallback?.onFinished()
-                        self.dismiss(animated: true, completion: nil)
-                        self.delegate.onCompletedSuccessfully(result: result)
-                    } else if result.state == .failed {
-                        self.activityIndicator.isHidden = true
-                        self.dismiss(animated: true, completion: nil)
-                        self.delegate.onCompletedWithError(error: ZippyError.processingFailed)
+                    if (result.state != .unknown && result.state != .processing) {
+                        self.getVerificationInformation(verificationId: verificationId, zippyResult: result)
+                        return
                     } else {
                         print("Scheduling poll")
                         self.count += 1
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(2), execute: {
-                            self.pollJobStatus()
+                            self.pollJobStatus(verificationId: verificationId)
                         })
                     }
                 }
         }
     }
     
+    func getVerificationInformation(verificationId: String, zippyResult: ZippyResult?) {
+        apiClient
+            .getVerificationStatus(verificationId: verificationId)
+            .observe{ (result) in
+                switch result {
+                case .error( _):
+                    self.activityIndicator.isHidden = true
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate.onCompletedWithError(error: ZippyError.processingFailed) 
+                case .value(let result):
+                    switch result.state {
+                    case .success?:
+                        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+                        self.zippyCallback?.onFinished()
+                        self.delegate.onCompletedSuccessfully(result: zippyResult!)
+                    case .failed?:
+                        self.toErrorVC(verification: result)
+                    default:
+                        break
+                    }
+                }
+        }
+    }
+    
+    func toErrorVC(verification: ZippyVerification) {
+        let bundle = Bundle(for: ZippyVC.self)
+        let errorVC = UIStoryboard(name: "Main", bundle: bundle).instantiateViewController(withIdentifier: "ErrorVC") as! ErrorVC
+        errorVC.retryDelegate = self.retryDelegate
+        errorVC.zippyVerification = verification
+        self.present(errorVC, animated: false, completion: nil)
+    }
+
     func adjustViews(_ enlargeConstraint: NSLayoutConstraint?, _ decreaseConstraint: NSLayoutConstraint?, _ showLabel: UILabel?, _ hideLabel: UILabel?) {
         enlargeConstraint?.constant = 91
         decreaseConstraint?.constant = 41
@@ -227,7 +237,7 @@ class WizardVC: UIViewController, URLSessionTaskDelegate {
     }
 }
 
-extension WizardVC: NextPhotoStep {
+extension WizardVC: NextStepDelegate {
     func onAccept(vc: PhotoConfirmationVC, image: UIImage) {
         switch currentImage {
         case .face:

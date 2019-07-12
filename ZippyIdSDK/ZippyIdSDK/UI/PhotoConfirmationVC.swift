@@ -10,17 +10,27 @@ import Foundation
 class PhotoConfirmationVC: UIViewController {
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var isReadableButton: UIButton!
-    @IBOutlet weak var takePhotoButton: UIButton!
+    @IBOutlet weak var isReadableButton: UIButton! {
+        didSet {
+            isReadableButton.layer.cornerRadius = 20
+        }
+    }
+    @IBOutlet weak var takePhotoButton: UIButton! {
+        didSet {
+            takePhotoButton.layer.cornerRadius = 20
+        }
+    }
     
     public weak var delegate: ZippyVCDelegate!
-    weak var nextPhotoStepDelegate: NextPhotoStep! = nil
+    private var configuration: ZippySessionConfig! = nil
+    public weak var nextStepDelegate: NextStepDelegate! = nil
     var mode: ZippyImageMode = .none
-    var document: Document!
     var image: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configuration = delegate.getSessionConfiguration()
         
         adjustForMode()
         
@@ -29,7 +39,7 @@ class PhotoConfirmationVC: UIViewController {
     }
     
     func adjustForMode() {
-        let documentTypeLabel: String = (document == .idCard) ? document.translation : document.translation.lowercased()
+        let documentTypeLabel: String = (configuration.documentType == .idCard) ? configuration.documentType.translation : configuration.documentType.translation.lowercased()
         
         switch mode {
         case .face:
@@ -46,7 +56,7 @@ class PhotoConfirmationVC: UIViewController {
 
     @IBAction func confirmPhoto(_ sender: UIButton) {
         presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-            self.nextPhotoStepDelegate.onAccept(vc: self, image: self.image!)
+            self.nextStepDelegate.onAccept(vc: self, image: self.image!)
         })
     }
 
